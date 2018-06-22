@@ -1,0 +1,94 @@
+/dts-v1/;
+
+/ {
+	#address-cells = <0x1>;
+	#size-cells = <0x1>;
+	model = "QEMU Cortex-M3";
+	compatible = "ti,lm3s6965evb-qemu", "ti,lm3s6965";
+
+	chosen {
+		zephyr,sram = "/memory@20000000";
+		zephyr,flash = "/flash@0";
+		zephyr,console = "/soc/uart@4000C000";
+		zephyr,bt-uart = "/soc/uart@4000E000";
+		zephyr,uart-pipe = "/soc/uart@4000D000";
+		zephyr,bt-mon-uart = "/soc/uart@4000E000";
+	};
+
+	aliases {
+		uart-0 = "/soc/uart@4000C000";
+		uart-1 = "/soc/uart@4000D000";
+		uart-2 = "/soc/uart@4000E000";
+	};
+
+	soc {
+		#address-cells = <0x1>;
+		#size-cells = <0x1>;
+		compatible = "simple-bus";
+		interrupt-parent = <0x1>;
+		ranges;
+
+		nvic: interrupt-controller@e000e100 {
+			compatible = "arm,v7m-nvic";
+			reg = <0xe000e100 0xc00>;
+			interrupt-controller;
+			#interrupt-cells = <0x2>;
+			arm,num-irq-priority-bits = <0x3>;
+			phandle = <0x1>;
+		};
+
+		systick: timer@e000e010 {
+			compatible = "arm,armv7m-systick";
+			reg = <0xe000e010 0x10>;
+			status = "disabled";
+		};
+
+		uart0: uart@4000C000 {
+			compatible = "ti,stellaris-uart";
+			reg = <0x4000c000 0x4c>;
+			interrupts = <0x5 0x3>;
+			status = "ok";
+			label = "UART_0";
+			current-speed = <0x1c200>;
+		};
+
+		uart1: uart@4000D000 {
+			compatible = "ti,stellaris-uart";
+			reg = <0x4000d000 0x4c>;
+			interrupts = <0x6 0x3>;
+			status = "ok";
+			label = "UART_1";
+			current-speed = <0x1c200>;
+		};
+
+		uart2: uart@4000E000 {
+			compatible = "ti,stellaris-uart";
+			reg = <0x4000e000 0x4c>;
+			interrupts = <0x21 0x3>;
+			status = "ok";
+			label = "UART_2";
+			current-speed = <0x1c200>;
+		};
+	};
+
+	cpus {
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-m3";
+			reg = <0x0>;
+		};
+	};
+
+	sram0: memory@20000000 {
+		device_type = "memory";
+		compatible = "mmio-sram";
+		reg = <0x20000000 0x10000>;
+	};
+
+	flash0: flash@0 {
+		reg = <0x0 0x40000>;
+	};
+};

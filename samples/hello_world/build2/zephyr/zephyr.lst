@@ -1,0 +1,3860 @@
+
+zephyr.elf:     file format elf32-littlearm
+
+
+Disassembly of section text:
+
+00000000 <_vector_table>:
+};
+#endif
+
+/* Linker needs this */
+GEN_ABS_SYM_BEGIN(isr_tables_syms)
+GEN_ABSOLUTE_SYM(__ISR_LIST_SIZEOF, sizeof(struct _isr_list));
+       0:	20000518 	.word	0x20000518
+
+#ifdef CONFIG_ERRNO
+int *__errno(void)
+{
+	return &_current->errno_var;
+}
+       4:	00000c05 	.word	0x00000c05
+       8:	00000c5d 	.word	0x00000c5d
+       c:	00000ab5 	.word	0x00000ab5
+      10:	00000ab5 	.word	0x00000ab5
+      14:	00000ab5 	.word	0x00000ab5
+      18:	00000ab5 	.word	0x00000ab5
+      1c:	00000ab5 	.word	0x00000ab5
+      20:	00000ab5 	.word	0x00000ab5
+      24:	00000ab5 	.word	0x00000ab5
+      28:	00000ab5 	.word	0x00000ab5
+      2c:	0000078d 	.word	0x0000078d
+      30:	00000ab5 	.word	0x00000ab5
+      34:	00000ab5 	.word	0x00000ab5
+      38:	00000749 	.word	0x00000749
+      3c:	00000681 	.word	0x00000681
+
+00000040 <_irq_vector_table>:
+      40:	00000be1 00000be1 00000be1 00000be1     ................
+      50:	00000be1 00000be1 00000be1 00000be1     ................
+      60:	00000be1 00000be1 00000be1 00000be1     ................
+      70:	00000be1 00000be1 00000be1 00000be1     ................
+      80:	00000be1 00000be1 00000be1 00000be1     ................
+      90:	00000be1 00000be1 00000be1 00000be1     ................
+      a0:	00000be1 00000be1 00000be1 00000be1     ................
+      b0:	00000be1 00000be1 00000be1 00000be1     ................
+      c0:	00000be1 00000be1                       ........
+
+000000c8 <_sw_isr_table>:
+      c8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+      d8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+      e8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+      f8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     108:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     118:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     128:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     138:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     148:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     158:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     168:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     178:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     188:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     198:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     1a8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     1b8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+     1c8:	00000000 00000a4d 00000000 00000a4d     ....M.......M...
+
+000001d8 <strcmp>:
+ *
+ * @return negative # if <s1> < <s2>, 0 if <s1> == <s2>, else positive #
+ */
+
+int strcmp(const char *s1, const char *s2)
+{
+     1d8:	3801      	subs	r0, #1
+     1da:	3901      	subs	r1, #1
+	while ((*s1 == *s2) && (*s1 != '\0')) {
+     1dc:	f810 3f01 	ldrb.w	r3, [r0, #1]!
+     1e0:	f811 2f01 	ldrb.w	r2, [r1, #1]!
+     1e4:	4293      	cmp	r3, r2
+     1e6:	d102      	bne.n	1ee <strcmp+0x16>
+     1e8:	2b00      	cmp	r3, #0
+     1ea:	d1f7      	bne.n	1dc <strcmp+0x4>
+     1ec:	461a      	mov	r2, r3
+		s1++;
+		s2++;
+	}
+
+	return *s1 - *s2;
+}
+     1ee:	1a98      	subs	r0, r3, r2
+     1f0:	4770      	bx	lr
+
+000001f2 <memcpy>:
+	/* attempt word-sized copying only if buffers have identical alignment */
+
+	unsigned char *d_byte = (unsigned char *)d;
+	const unsigned char *s_byte = (const unsigned char *)s;
+
+	if ((((unsigned int)d ^ (unsigned int)s_byte) & 0x3) == 0) {
+     1f2:	ea81 0300 	eor.w	r3, r1, r0
+     1f6:	f013 0f03 	tst.w	r3, #3
+{
+     1fa:	b570      	push	{r4, r5, r6, lr}
+     1fc:	4603      	mov	r3, r0
+	if ((((unsigned int)d ^ (unsigned int)s_byte) & 0x3) == 0) {
+     1fe:	d00b      	beq.n	218 <memcpy+0x26>
+     200:	3b01      	subs	r3, #1
+     202:	440a      	add	r2, r1
+		s_byte = (unsigned char *)s_word;
+	}
+
+	/* do byte-sized copying until finished */
+
+	while (n > 0) {
+     204:	4291      	cmp	r1, r2
+     206:	d11b      	bne.n	240 <memcpy+0x4e>
+		*(d_byte++) = *(s_byte++);
+		n--;
+	}
+
+	return d;
+}
+     208:	bd70      	pop	{r4, r5, r6, pc}
+			if (n == 0) {
+     20a:	2a00      	cmp	r2, #0
+     20c:	d0fc      	beq.n	208 <memcpy+0x16>
+			*(d_byte++) = *(s_byte++);
+     20e:	f811 4b01 	ldrb.w	r4, [r1], #1
+			n--;
+     212:	3a01      	subs	r2, #1
+			*(d_byte++) = *(s_byte++);
+     214:	f803 4b01 	strb.w	r4, [r3], #1
+		while (((unsigned int)d_byte) & 0x3) {
+     218:	079c      	lsls	r4, r3, #30
+     21a:	d1f6      	bne.n	20a <memcpy+0x18>
+     21c:	460d      	mov	r5, r1
+     21e:	1f1e      	subs	r6, r3, #4
+     220:	1b54      	subs	r4, r2, r5
+     222:	440c      	add	r4, r1
+		while (n >= sizeof(unsigned int)) {
+     224:	2c03      	cmp	r4, #3
+     226:	d806      	bhi.n	236 <memcpy+0x44>
+     228:	f022 0403 	bic.w	r4, r2, #3
+     22c:	4421      	add	r1, r4
+     22e:	4423      	add	r3, r4
+     230:	f002 0203 	and.w	r2, r2, #3
+     234:	e7e4      	b.n	200 <memcpy+0xe>
+			*(d_word++) = *(s_word++);
+     236:	f855 4b04 	ldr.w	r4, [r5], #4
+     23a:	f846 4f04 	str.w	r4, [r6, #4]!
+     23e:	e7ef      	b.n	220 <memcpy+0x2e>
+		*(d_byte++) = *(s_byte++);
+     240:	f811 4b01 	ldrb.w	r4, [r1], #1
+     244:	f803 4f01 	strb.w	r4, [r3, #1]!
+     248:	e7dc      	b.n	204 <memcpy+0x12>
+
+0000024a <memset>:
+
+void *memset(void *buf, int c, size_t n)
+{
+	/* do byte-sized initialization until word-aligned or finished */
+
+	unsigned char *d_byte = (unsigned char *)buf;
+     24a:	4603      	mov	r3, r0
+{
+     24c:	b570      	push	{r4, r5, r6, lr}
+	unsigned char c_byte = (unsigned char)c;
+     24e:	b2c9      	uxtb	r1, r1
+
+	while (((unsigned int)d_byte) & 0x3) {
+     250:	079c      	lsls	r4, r3, #30
+     252:	d111      	bne.n	278 <memset+0x2e>
+	unsigned int c_word = (unsigned int)(unsigned char)c;
+
+	c_word |= c_word << 8;
+	c_word |= c_word << 16;
+
+	while (n >= sizeof(unsigned int)) {
+     254:	461e      	mov	r6, r3
+	c_word |= c_word << 8;
+     256:	ea41 2401 	orr.w	r4, r1, r1, lsl #8
+	c_word |= c_word << 16;
+     25a:	ea44 4404 	orr.w	r4, r4, r4, lsl #16
+     25e:	1b95      	subs	r5, r2, r6
+     260:	441d      	add	r5, r3
+	while (n >= sizeof(unsigned int)) {
+     262:	2d03      	cmp	r5, #3
+     264:	d80e      	bhi.n	284 <memset+0x3a>
+     266:	f022 0403 	bic.w	r4, r2, #3
+     26a:	4423      	add	r3, r4
+     26c:	f002 0203 	and.w	r2, r2, #3
+     270:	441a      	add	r2, r3
+
+	/* do byte-sized initialization until finished */
+
+	d_byte = (unsigned char *)d_word;
+
+	while (n > 0) {
+     272:	4293      	cmp	r3, r2
+     274:	d109      	bne.n	28a <memset+0x40>
+		*(d_byte++) = c_byte;
+		n--;
+	}
+
+	return buf;
+}
+     276:	bd70      	pop	{r4, r5, r6, pc}
+		if (n == 0) {
+     278:	2a00      	cmp	r2, #0
+     27a:	d0fc      	beq.n	276 <memset+0x2c>
+		*(d_byte++) = c_byte;
+     27c:	f803 1b01 	strb.w	r1, [r3], #1
+		n--;
+     280:	3a01      	subs	r2, #1
+     282:	e7e5      	b.n	250 <memset+0x6>
+		*(d_word++) = c_word;
+     284:	f846 4b04 	str.w	r4, [r6], #4
+     288:	e7e9      	b.n	25e <memset+0x14>
+		*(d_byte++) = c_byte;
+     28a:	f803 1b01 	strb.w	r1, [r3], #1
+     28e:	e7f0      	b.n	272 <memset+0x28>
+
+00000290 <main>:
+#include <zephyr.h>
+#include <misc/printk.h>
+
+void main(void)
+{
+	printk("Hello World! %s\n", CONFIG_ARCH);
+     290:	4901      	ldr	r1, [pc, #4]	; (298 <main+0x8>)
+     292:	4802      	ldr	r0, [pc, #8]	; (29c <main+0xc>)
+     294:	f000 b9be 	b.w	614 <printk>
+     298:	00001538 	.word	0x00001538
+     29c:	0000153c 	.word	0x0000153c
+
+000002a0 <ti_lm3s6965_init>:
+	/* Install default handler that simply resets the CPU
+	 * if configured in the kernel, NOP otherwise
+	 */
+	NMI_INIT();
+	return 0;
+}
+     2a0:	2000      	movs	r0, #0
+     2a2:	4770      	bx	lr
+
+000002a4 <uart_stellaris_init>:
+#define RCGC1_UART2_EN 0x00000004
+
+static int uart_stellaris_init(struct device *dev)
+{
+#ifdef CONFIG_UART_STELLARIS_PORT_0
+	RCGC1 |= RCGC1_UART0_EN;
+     2a4:	4b07      	ldr	r3, [pc, #28]	; (2c4 <uart_stellaris_init+0x20>)
+#ifdef CONFIG_UART_STELLARIS_PORT_2
+	RCGC1 |= RCGC1_UART2_EN;
+#endif
+
+	return 0;
+}
+     2a6:	2000      	movs	r0, #0
+	RCGC1 |= RCGC1_UART0_EN;
+     2a8:	681a      	ldr	r2, [r3, #0]
+     2aa:	f042 0201 	orr.w	r2, r2, #1
+     2ae:	601a      	str	r2, [r3, #0]
+	RCGC1 |= RCGC1_UART1_EN;
+     2b0:	681a      	ldr	r2, [r3, #0]
+     2b2:	f042 0202 	orr.w	r2, r2, #2
+     2b6:	601a      	str	r2, [r3, #0]
+	RCGC1 |= RCGC1_UART2_EN;
+     2b8:	681a      	ldr	r2, [r3, #0]
+     2ba:	f042 0204 	orr.w	r2, r2, #4
+     2be:	601a      	str	r2, [r3, #0]
+}
+     2c0:	4770      	bx	lr
+     2c2:	bf00      	nop
+     2c4:	400fe104 	.word	0x400fe104
+
+000002c8 <_thread_entry>:
+ * This routine does not return, and is marked as such so the compiler won't
+ * generate preamble code that is only used by functions that actually return.
+ */
+FUNC_NORETURN void _thread_entry(k_thread_entry_t entry,
+				 void *p1, void *p2, void *p3)
+{
+     2c8:	b508      	push	{r3, lr}
+     2ca:	4604      	mov	r4, r0
+     2cc:	4608      	mov	r0, r1
+     2ce:	4611      	mov	r1, r2
+	entry(p1, p2, p3);
+     2d0:	461a      	mov	r2, r3
+     2d2:	47a0      	blx	r4
+
+K_SYSCALL_DECLARE0_VOID(K_SYSCALL_K_YIELD, k_yield);
+
+K_SYSCALL_DECLARE1_VOID(K_SYSCALL_K_WAKEUP, k_wakeup, k_tid_t, thread);
+
+K_SYSCALL_DECLARE0(K_SYSCALL_K_CURRENT_GET, k_current_get, k_tid_t);
+     2d4:	f000 ff04 	bl	10e0 <_impl_k_current_get>
+
+K_SYSCALL_DECLARE1(K_SYSCALL_K_THREAD_CANCEL, k_thread_cancel, int, k_tid_t, thread);
+
+K_SYSCALL_DECLARE1_VOID(K_SYSCALL_K_THREAD_ABORT, k_thread_abort, k_tid_t, thread);
+     2d8:	f000 fc5c 	bl	b94 <_impl_k_thread_abort>
+
+000002dc <_nop_char_out>:
+{
+	ARG_UNUSED(c);
+
+	/* do nothing */
+	return 0;
+}
+     2dc:	2000      	movs	r0, #0
+     2de:	4770      	bx	lr
+
+000002e0 <char_out>:
+
+static int char_out(int c, void *ctx_p)
+{
+	struct out_context *ctx = ctx_p;
+
+	ctx->count++;
+     2e0:	680b      	ldr	r3, [r1, #0]
+     2e2:	3301      	adds	r3, #1
+     2e4:	600b      	str	r3, [r1, #0]
+	return _char_out(c);
+     2e6:	4b01      	ldr	r3, [pc, #4]	; (2ec <char_out+0xc>)
+     2e8:	681b      	ldr	r3, [r3, #0]
+     2ea:	4718      	bx	r3
+     2ec:	20000e18 	.word	0x20000e18
+
+000002f0 <_printk_dec_ulong>:
+ * @return N/A
+ */
+static void _printk_dec_ulong(out_func_t out, void *ctx,
+			      const unsigned long num, enum pad_type padding,
+			      int min_width)
+{
+     2f0:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+     2f4:	b085      	sub	sp, #20
+     2f6:	9c0e      	ldr	r4, [sp, #56]	; 0x38
+     2f8:	469b      	mov	fp, r3
+     2fa:	2c01      	cmp	r4, #1
+     2fc:	bfb8      	it	lt
+     2fe:	2401      	movlt	r4, #1
+     300:	2b01      	cmp	r3, #1
+     302:	bf0c      	ite	eq
+     304:	2330      	moveq	r3, #48	; 0x30
+     306:	2320      	movne	r3, #32
+     308:	4615      	mov	r5, r2
+     30a:	4680      	mov	r8, r0
+     30c:	4689      	mov	r9, r1
+     30e:	2601      	movs	r6, #1
+     310:	270a      	movs	r7, #10
+     312:	2200      	movs	r2, #0
+     314:	f8df a070 	ldr.w	sl, [pc, #112]	; 388 <_printk_dec_ulong+0x98>
+     318:	9401      	str	r4, [sp, #4]
+     31a:	9302      	str	r3, [sp, #8]
+     31c:	f10a 0401 	add.w	r4, sl, #1
+	if (min_width <= 0) {
+		min_width = 1;
+	}
+
+	while (pos >= 9) {
+		if (found_largest_digit || remainder > pos) {
+     320:	b90a      	cbnz	r2, 326 <_printk_dec_ulong+0x36>
+     322:	45aa      	cmp	sl, r5
+     324:	d21e      	bcs.n	364 <_printk_dec_ulong+0x74>
+			found_largest_digit = 1;
+			out((int)((remainder / (pos + 1)) + 48), ctx);
+     326:	fbb5 f0f4 	udiv	r0, r5, r4
+     32a:	4649      	mov	r1, r9
+     32c:	3030      	adds	r0, #48	; 0x30
+     32e:	47c0      	blx	r8
+			found_largest_digit = 1;
+     330:	2201      	movs	r2, #1
+			digits++;
+     332:	3601      	adds	r6, #1
+				&& padding < PAD_SPACE_AFTER) {
+			out((int)(padding == PAD_ZERO_BEFORE ? '0' : ' '), ctx);
+			digits++;
+		}
+		remaining--;
+		remainder %= (pos + 1);
+     334:	fbb5 f1f4 	udiv	r1, r5, r4
+		pos /= 10;
+     338:	230a      	movs	r3, #10
+		remaining--;
+     33a:	3f01      	subs	r7, #1
+	while (pos >= 9) {
+     33c:	2f01      	cmp	r7, #1
+		remainder %= (pos + 1);
+     33e:	fb04 5511 	mls	r5, r4, r1, r5
+		pos /= 10;
+     342:	fbba faf3 	udiv	sl, sl, r3
+	while (pos >= 9) {
+     346:	d1e9      	bne.n	31c <_printk_dec_ulong+0x2c>
+	}
+	out((int)(remainder + 48), ctx);
+     348:	4649      	mov	r1, r9
+     34a:	f105 0030 	add.w	r0, r5, #48	; 0x30
+     34e:	47c0      	blx	r8
+
+	if (padding == PAD_SPACE_AFTER) {
+     350:	f1bb 0f03 	cmp.w	fp, #3
+     354:	d103      	bne.n	35e <_printk_dec_ulong+0x6e>
+		remaining = min_width - digits;
+     356:	9b01      	ldr	r3, [sp, #4]
+     358:	1b9c      	subs	r4, r3, r6
+		while (remaining-- > 0) {
+     35a:	2c00      	cmp	r4, #0
+     35c:	dc0f      	bgt.n	37e <_printk_dec_ulong+0x8e>
+			out(' ', ctx);
+		}
+	}
+}
+     35e:	b005      	add	sp, #20
+     360:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+		} else if (remaining <= min_width
+     364:	9b01      	ldr	r3, [sp, #4]
+     366:	42bb      	cmp	r3, r7
+     368:	dbe4      	blt.n	334 <_printk_dec_ulong+0x44>
+				&& padding < PAD_SPACE_AFTER) {
+     36a:	f1bb 0f02 	cmp.w	fp, #2
+     36e:	d8e1      	bhi.n	334 <_printk_dec_ulong+0x44>
+			out((int)(padding == PAD_ZERO_BEFORE ? '0' : ' '), ctx);
+     370:	4649      	mov	r1, r9
+     372:	9802      	ldr	r0, [sp, #8]
+     374:	9203      	str	r2, [sp, #12]
+			digits++;
+     376:	3601      	adds	r6, #1
+			out((int)(padding == PAD_ZERO_BEFORE ? '0' : ' '), ctx);
+     378:	47c0      	blx	r8
+			digits++;
+     37a:	9a03      	ldr	r2, [sp, #12]
+     37c:	e7da      	b.n	334 <_printk_dec_ulong+0x44>
+			out(' ', ctx);
+     37e:	4649      	mov	r1, r9
+     380:	2020      	movs	r0, #32
+     382:	47c0      	blx	r8
+     384:	3c01      	subs	r4, #1
+     386:	e7e8      	b.n	35a <_printk_dec_ulong+0x6a>
+     388:	3b9ac9ff 	.word	0x3b9ac9ff
+
+0000038c <__printk_hook_install>:
+	_char_out = fn;
+     38c:	4b01      	ldr	r3, [pc, #4]	; (394 <__printk_hook_install+0x8>)
+     38e:	6018      	str	r0, [r3, #0]
+     390:	4770      	bx	lr
+     392:	bf00      	nop
+     394:	20000e18 	.word	0x20000e18
+
+00000398 <_vprintk>:
+{
+     398:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+	int long_ctr = 0;
+     39c:	f04f 0a00 	mov.w	sl, #0
+{
+     3a0:	4606      	mov	r6, r0
+     3a2:	460f      	mov	r7, r1
+     3a4:	461c      	mov	r4, r3
+	int min_width = -1;
+     3a6:	f04f 39ff 	mov.w	r9, #4294967295	; 0xffffffff
+	enum pad_type padding = PAD_NONE;
+     3aa:	46d0      	mov	r8, sl
+	int might_format = 0; /* 1 if encountered a '%' */
+     3ac:	4655      	mov	r5, sl
+{
+     3ae:	b089      	sub	sp, #36	; 0x24
+     3b0:	9204      	str	r2, [sp, #16]
+	while (*fmt) {
+     3b2:	9b04      	ldr	r3, [sp, #16]
+     3b4:	7818      	ldrb	r0, [r3, #0]
+     3b6:	b910      	cbnz	r0, 3be <_vprintk+0x26>
+}
+     3b8:	b009      	add	sp, #36	; 0x24
+     3ba:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+		if (!might_format) {
+     3be:	b945      	cbnz	r5, 3d2 <_vprintk+0x3a>
+			if (*fmt != '%') {
+     3c0:	2825      	cmp	r0, #37	; 0x25
+     3c2:	f000 810b 	beq.w	5dc <CONFIG_MAIN_STACK_SIZE+0x1dc>
+				out((int)*fmt, ctx);
+     3c6:	4639      	mov	r1, r7
+     3c8:	47b0      	blx	r6
+		++fmt;
+     3ca:	9b04      	ldr	r3, [sp, #16]
+     3cc:	3301      	adds	r3, #1
+     3ce:	9304      	str	r3, [sp, #16]
+     3d0:	e7ef      	b.n	3b2 <_vprintk+0x1a>
+			switch (*fmt) {
+     3d2:	2864      	cmp	r0, #100	; 0x64
+     3d4:	d061      	beq.n	49a <CONFIG_MAIN_STACK_SIZE+0x9a>
+     3d6:	d819      	bhi.n	40c <CONFIG_MAIN_STACK_SIZE+0xc>
+     3d8:	2839      	cmp	r0, #57	; 0x39
+     3da:	d80a      	bhi.n	3f2 <_vprintk+0x5a>
+     3dc:	2831      	cmp	r0, #49	; 0x31
+     3de:	d250      	bcs.n	482 <CONFIG_MAIN_STACK_SIZE+0x82>
+     3e0:	282d      	cmp	r0, #45	; 0x2d
+     3e2:	d03c      	beq.n	45e <CONFIG_MAIN_STACK_SIZE+0x5e>
+     3e4:	2830      	cmp	r0, #48	; 0x30
+     3e6:	d03d      	beq.n	464 <CONFIG_MAIN_STACK_SIZE+0x64>
+     3e8:	2825      	cmp	r0, #37	; 0x25
+     3ea:	d108      	bne.n	3fe <_vprintk+0x66>
+				out((int)'%', ctx);
+     3ec:	4639      	mov	r1, r7
+				out((int)*fmt, ctx);
+     3ee:	47b0      	blx	r6
+     3f0:	e06f      	b.n	4d2 <CONFIG_MAIN_STACK_SIZE+0xd2>
+			switch (*fmt) {
+     3f2:	2858      	cmp	r0, #88	; 0x58
+     3f4:	f000 8089 	beq.w	50a <CONFIG_MAIN_STACK_SIZE+0x10a>
+     3f8:	2863      	cmp	r0, #99	; 0x63
+     3fa:	f000 80e9 	beq.w	5d0 <CONFIG_MAIN_STACK_SIZE+0x1d0>
+				out((int)'%', ctx);
+     3fe:	4639      	mov	r1, r7
+     400:	2025      	movs	r0, #37	; 0x25
+     402:	47b0      	blx	r6
+				out((int)*fmt, ctx);
+     404:	9b04      	ldr	r3, [sp, #16]
+     406:	4639      	mov	r1, r7
+     408:	7818      	ldrb	r0, [r3, #0]
+     40a:	e7f0      	b.n	3ee <_vprintk+0x56>
+			switch (*fmt) {
+     40c:	2870      	cmp	r0, #112	; 0x70
+     40e:	d072      	beq.n	4f6 <CONFIG_MAIN_STACK_SIZE+0xf6>
+     410:	d806      	bhi.n	420 <CONFIG_MAIN_STACK_SIZE+0x20>
+     412:	2869      	cmp	r0, #105	; 0x69
+     414:	d041      	beq.n	49a <CONFIG_MAIN_STACK_SIZE+0x9a>
+     416:	286c      	cmp	r0, #108	; 0x6c
+     418:	d03c      	beq.n	494 <CONFIG_MAIN_STACK_SIZE+0x94>
+     41a:	2868      	cmp	r0, #104	; 0x68
+     41c:	d0d5      	beq.n	3ca <_vprintk+0x32>
+     41e:	e7ee      	b.n	3fe <_vprintk+0x66>
+     420:	2875      	cmp	r0, #117	; 0x75
+     422:	d058      	beq.n	4d6 <CONFIG_MAIN_STACK_SIZE+0xd6>
+     424:	d817      	bhi.n	456 <CONFIG_MAIN_STACK_SIZE+0x56>
+     426:	2873      	cmp	r0, #115	; 0x73
+     428:	d1e9      	bne.n	3fe <_vprintk+0x66>
+				char *s = va_arg(ap, char *);
+     42a:	6823      	ldr	r3, [r4, #0]
+     42c:	f104 0b04 	add.w	fp, r4, #4
+     430:	461c      	mov	r4, r3
+				while (*s)
+     432:	4625      	mov	r5, r4
+     434:	f815 0b01 	ldrb.w	r0, [r5], #1
+     438:	2800      	cmp	r0, #0
+     43a:	f040 80be 	bne.w	5ba <CONFIG_MAIN_STACK_SIZE+0x1ba>
+				if (padding == PAD_SPACE_AFTER) {
+     43e:	f1b8 0f03 	cmp.w	r8, #3
+     442:	f040 80d4 	bne.w	5ee <CONFIG_MAIN_STACK_SIZE+0x1ee>
+					int remaining = min_width - (s - start);
+     446:	1ae4      	subs	r4, r4, r3
+     448:	eba9 0404 	sub.w	r4, r9, r4
+					while (remaining-- > 0) {
+     44c:	2c00      	cmp	r4, #0
+     44e:	f300 80ba 	bgt.w	5c6 <CONFIG_MAIN_STACK_SIZE+0x1c6>
+				char *s = va_arg(ap, char *);
+     452:	465c      	mov	r4, fp
+     454:	e03d      	b.n	4d2 <CONFIG_MAIN_STACK_SIZE+0xd2>
+			switch (*fmt) {
+     456:	2878      	cmp	r0, #120	; 0x78
+     458:	d057      	beq.n	50a <CONFIG_MAIN_STACK_SIZE+0x10a>
+     45a:	287a      	cmp	r0, #122	; 0x7a
+     45c:	e7de      	b.n	41c <CONFIG_MAIN_STACK_SIZE+0x1c>
+				padding = PAD_SPACE_AFTER;
+     45e:	f04f 0803 	mov.w	r8, #3
+     462:	e7b2      	b.n	3ca <_vprintk+0x32>
+				if (min_width < 0 && padding == PAD_NONE) {
+     464:	f1b9 0f00 	cmp.w	r9, #0
+     468:	da0e      	bge.n	488 <CONFIG_MAIN_STACK_SIZE+0x88>
+     46a:	f1b8 0f00 	cmp.w	r8, #0
+     46e:	f000 80bb 	beq.w	5e8 <CONFIG_MAIN_STACK_SIZE+0x1e8>
+					min_width = *fmt - '0';
+     472:	f1a0 0930 	sub.w	r9, r0, #48	; 0x30
+					padding = PAD_SPACE_BEFORE;
+     476:	f1b8 0f00 	cmp.w	r8, #0
+     47a:	bf08      	it	eq
+     47c:	f04f 0802 	moveq.w	r8, #2
+     480:	e7a3      	b.n	3ca <_vprintk+0x32>
+				if (min_width < 0) {
+     482:	f1b9 0f00 	cmp.w	r9, #0
+     486:	dbf4      	blt.n	472 <CONFIG_MAIN_STACK_SIZE+0x72>
+					min_width = 10 * min_width + *fmt - '0';
+     488:	230a      	movs	r3, #10
+     48a:	fb03 0909 	mla	r9, r3, r9, r0
+     48e:	f1a9 0930 	sub.w	r9, r9, #48	; 0x30
+     492:	e7f0      	b.n	476 <CONFIG_MAIN_STACK_SIZE+0x76>
+				long_ctr++;
+     494:	f10a 0a01 	add.w	sl, sl, #1
+     498:	e797      	b.n	3ca <_vprintk+0x32>
+				if (long_ctr < 2) {
+     49a:	f1ba 0f01 	cmp.w	sl, #1
+					d = (long)va_arg(ap, long long);
+     49e:	bfc5      	ittet	gt
+     4a0:	3407      	addgt	r4, #7
+     4a2:	f024 0307 	bicgt.w	r3, r4, #7
+					d = va_arg(ap, long);
+     4a6:	6825      	ldrle	r5, [r4, #0]
+					d = (long)va_arg(ap, long long);
+     4a8:	681d      	ldrgt	r5, [r3, #0]
+					d = va_arg(ap, long);
+     4aa:	bfd4      	ite	le
+     4ac:	3404      	addle	r4, #4
+					d = (long)va_arg(ap, long long);
+     4ae:	f103 0408 	addgt.w	r4, r3, #8
+				if (d < 0) {
+     4b2:	2d00      	cmp	r5, #0
+     4b4:	da05      	bge.n	4c2 <CONFIG_MAIN_STACK_SIZE+0xc2>
+					out((int)'-', ctx);
+     4b6:	4639      	mov	r1, r7
+     4b8:	202d      	movs	r0, #45	; 0x2d
+     4ba:	47b0      	blx	r6
+					d = -d;
+     4bc:	426d      	negs	r5, r5
+					min_width--;
+     4be:	f109 39ff 	add.w	r9, r9, #4294967295	; 0xffffffff
+				_printk_dec_ulong(out, ctx, d, padding,
+     4c2:	4643      	mov	r3, r8
+     4c4:	462a      	mov	r2, r5
+     4c6:	f8cd 9000 	str.w	r9, [sp]
+				_printk_dec_ulong(out, ctx, u, padding,
+     4ca:	4639      	mov	r1, r7
+     4cc:	4630      	mov	r0, r6
+     4ce:	f7ff ff0f 	bl	2f0 <_printk_dec_ulong>
+			might_format = 0;
+     4d2:	2500      	movs	r5, #0
+				break;
+     4d4:	e779      	b.n	3ca <_vprintk+0x32>
+				if (long_ctr < 2) {
+     4d6:	f1ba 0f01 	cmp.w	sl, #1
+					u = (unsigned long)va_arg(ap,
+     4da:	bfc5      	ittet	gt
+     4dc:	3407      	addgt	r4, #7
+     4de:	f024 0307 	bicgt.w	r3, r4, #7
+					u = va_arg(ap, unsigned long);
+     4e2:	6822      	ldrle	r2, [r4, #0]
+					u = (unsigned long)va_arg(ap,
+     4e4:	681a      	ldrgt	r2, [r3, #0]
+     4e6:	bfcc      	ite	gt
+     4e8:	f103 0408 	addgt.w	r4, r3, #8
+					u = va_arg(ap, unsigned long);
+     4ec:	3404      	addle	r4, #4
+				_printk_dec_ulong(out, ctx, u, padding,
+     4ee:	f8cd 9000 	str.w	r9, [sp]
+     4f2:	4643      	mov	r3, r8
+     4f4:	e7e9      	b.n	4ca <CONFIG_MAIN_STACK_SIZE+0xca>
+				  out('0', ctx);
+     4f6:	4639      	mov	r1, r7
+     4f8:	2030      	movs	r0, #48	; 0x30
+     4fa:	47b0      	blx	r6
+				  out('x', ctx);
+     4fc:	4639      	mov	r1, r7
+     4fe:	2078      	movs	r0, #120	; 0x78
+     500:	47b0      	blx	r6
+				  min_width = 8;
+     502:	f04f 0908 	mov.w	r9, #8
+				  padding = PAD_ZERO_BEFORE;
+     506:	f04f 0801 	mov.w	r8, #1
+	int remaining = 8; /* 8 digits max */
+     50a:	2208      	movs	r2, #8
+				if (long_ctr < 2) {
+     50c:	f1ba 0f01 	cmp.w	sl, #1
+					x = (unsigned long)va_arg(ap,
+     510:	bfc5      	ittet	gt
+     512:	3407      	addgt	r4, #7
+     514:	f024 0307 	bicgt.w	r3, r4, #7
+					x = va_arg(ap, unsigned long);
+     518:	6823      	ldrle	r3, [r4, #0]
+					x = (unsigned long)va_arg(ap,
+     51a:	f103 0408 	addgt.w	r4, r3, #8
+     51e:	bfca      	itet	gt
+     520:	681b      	ldrgt	r3, [r3, #0]
+					x = va_arg(ap, unsigned long);
+     522:	9305      	strle	r3, [sp, #20]
+					x = (unsigned long)va_arg(ap,
+     524:	9305      	strgt	r3, [sp, #20]
+	int digits = 0;
+     526:	f04f 0300 	mov.w	r3, #0
+	int size = sizeof(num) * 2;
+     52a:	4693      	mov	fp, r2
+					x = va_arg(ap, unsigned long);
+     52c:	bfd8      	it	le
+     52e:	3404      	addle	r4, #4
+	int digits = 0;
+     530:	9303      	str	r3, [sp, #12]
+	int found_largest_digit = 0;
+     532:	9307      	str	r3, [sp, #28]
+		char nibble = (num >> ((size - 1) << 2) & 0xf);
+     534:	f10b 3bff 	add.w	fp, fp, #4294967295	; 0xffffffff
+     538:	9b05      	ldr	r3, [sp, #20]
+     53a:	ea4f 008b 	mov.w	r0, fp, lsl #2
+     53e:	fa23 f000 	lsr.w	r0, r3, r0
+		if (nibble || found_largest_digit || size == 1) {
+     542:	f010 000f 	ands.w	r0, r0, #15
+     546:	d109      	bne.n	55c <CONFIG_MAIN_STACK_SIZE+0x15c>
+     548:	9b07      	ldr	r3, [sp, #28]
+     54a:	b913      	cbnz	r3, 552 <CONFIG_MAIN_STACK_SIZE+0x152>
+     54c:	f1bb 0f00 	cmp.w	fp, #0
+     550:	d122      	bne.n	598 <CONFIG_MAIN_STACK_SIZE+0x198>
+			nibble += nibble > 9 ? 87 : 48;
+     552:	f04f 0e30 	mov.w	lr, #48	; 0x30
+     556:	e007      	b.n	568 <CONFIG_MAIN_STACK_SIZE+0x168>
+	for (; size; size--) {
+     558:	9a06      	ldr	r2, [sp, #24]
+     55a:	e7eb      	b.n	534 <CONFIG_MAIN_STACK_SIZE+0x134>
+			nibble += nibble > 9 ? 87 : 48;
+     55c:	2809      	cmp	r0, #9
+     55e:	bf8c      	ite	hi
+     560:	f04f 0e57 	movhi.w	lr, #87	; 0x57
+     564:	f04f 0e30 	movls.w	lr, #48	; 0x30
+			out((int)nibble, ctx);
+     568:	4639      	mov	r1, r7
+     56a:	4470      	add	r0, lr
+     56c:	9206      	str	r2, [sp, #24]
+     56e:	47b0      	blx	r6
+			digits++;
+     570:	9b03      	ldr	r3, [sp, #12]
+			found_largest_digit = 1;
+     572:	9507      	str	r5, [sp, #28]
+			digits++;
+     574:	3301      	adds	r3, #1
+     576:	9303      	str	r3, [sp, #12]
+	for (; size; size--) {
+     578:	f1bb 0f00 	cmp.w	fp, #0
+     57c:	d1ec      	bne.n	558 <CONFIG_MAIN_STACK_SIZE+0x158>
+	if (padding == PAD_SPACE_AFTER) {
+     57e:	f1b8 0f03 	cmp.w	r8, #3
+     582:	d1a6      	bne.n	4d2 <CONFIG_MAIN_STACK_SIZE+0xd2>
+		remaining = min_width * 2 - digits;
+     584:	9b03      	ldr	r3, [sp, #12]
+     586:	ebc3 0549 	rsb	r5, r3, r9, lsl #1
+		while (remaining-- > 0) {
+     58a:	2d00      	cmp	r5, #0
+     58c:	dda1      	ble.n	4d2 <CONFIG_MAIN_STACK_SIZE+0xd2>
+			out(' ', ctx);
+     58e:	4639      	mov	r1, r7
+     590:	2020      	movs	r0, #32
+     592:	47b0      	blx	r6
+     594:	3d01      	subs	r5, #1
+     596:	e7f8      	b.n	58a <CONFIG_MAIN_STACK_SIZE+0x18a>
+		if (remaining-- <= min_width) {
+     598:	1e53      	subs	r3, r2, #1
+     59a:	4591      	cmp	r9, r2
+     59c:	9306      	str	r3, [sp, #24]
+     59e:	dbeb      	blt.n	578 <CONFIG_MAIN_STACK_SIZE+0x178>
+			if (padding == PAD_ZERO_BEFORE) {
+     5a0:	f1b8 0f01 	cmp.w	r8, #1
+     5a4:	d103      	bne.n	5ae <CONFIG_MAIN_STACK_SIZE+0x1ae>
+				out('0', ctx);
+     5a6:	4639      	mov	r1, r7
+     5a8:	2030      	movs	r0, #48	; 0x30
+				out(' ', ctx);
+     5aa:	47b0      	blx	r6
+     5ac:	e7e4      	b.n	578 <CONFIG_MAIN_STACK_SIZE+0x178>
+			} else if (padding == PAD_SPACE_BEFORE) {
+     5ae:	f1b8 0f02 	cmp.w	r8, #2
+     5b2:	d1e1      	bne.n	578 <CONFIG_MAIN_STACK_SIZE+0x178>
+				out(' ', ctx);
+     5b4:	4639      	mov	r1, r7
+     5b6:	2020      	movs	r0, #32
+     5b8:	e7f7      	b.n	5aa <CONFIG_MAIN_STACK_SIZE+0x1aa>
+					out((int)(*s++), ctx);
+     5ba:	4639      	mov	r1, r7
+     5bc:	9303      	str	r3, [sp, #12]
+     5be:	462c      	mov	r4, r5
+     5c0:	47b0      	blx	r6
+     5c2:	9b03      	ldr	r3, [sp, #12]
+     5c4:	e735      	b.n	432 <CONFIG_MAIN_STACK_SIZE+0x32>
+						out(' ', ctx);
+     5c6:	4639      	mov	r1, r7
+     5c8:	2020      	movs	r0, #32
+     5ca:	47b0      	blx	r6
+     5cc:	3c01      	subs	r4, #1
+     5ce:	e73d      	b.n	44c <CONFIG_MAIN_STACK_SIZE+0x4c>
+				out(c, ctx);
+     5d0:	6820      	ldr	r0, [r4, #0]
+				int c = va_arg(ap, int);
+     5d2:	1d25      	adds	r5, r4, #4
+				out(c, ctx);
+     5d4:	4639      	mov	r1, r7
+     5d6:	47b0      	blx	r6
+				int c = va_arg(ap, int);
+     5d8:	462c      	mov	r4, r5
+     5da:	e77a      	b.n	4d2 <CONFIG_MAIN_STACK_SIZE+0xd2>
+				long_ctr = 0;
+     5dc:	46aa      	mov	sl, r5
+				padding = PAD_NONE;
+     5de:	46a8      	mov	r8, r5
+				min_width = -1;
+     5e0:	f04f 39ff 	mov.w	r9, #4294967295	; 0xffffffff
+				might_format = 1;
+     5e4:	2501      	movs	r5, #1
+     5e6:	e6f0      	b.n	3ca <_vprintk+0x32>
+					padding = PAD_ZERO_BEFORE;
+     5e8:	f04f 0801 	mov.w	r8, #1
+     5ec:	e6ed      	b.n	3ca <_vprintk+0x32>
+				char *s = va_arg(ap, char *);
+     5ee:	465c      	mov	r4, fp
+			might_format = 0;
+     5f0:	4605      	mov	r5, r0
+     5f2:	e6ea      	b.n	3ca <_vprintk+0x32>
+
+000005f4 <vprintk>:
+	struct out_context ctx = { 0 };
+     5f4:	2300      	movs	r3, #0
+{
+     5f6:	b513      	push	{r0, r1, r4, lr}
+	struct out_context ctx = { 0 };
+     5f8:	ac02      	add	r4, sp, #8
+     5fa:	f844 3d04 	str.w	r3, [r4, #-4]!
+	_vprintk(char_out, &ctx, fmt, ap);
+     5fe:	4602      	mov	r2, r0
+     600:	460b      	mov	r3, r1
+     602:	4803      	ldr	r0, [pc, #12]	; (610 <vprintk+0x1c>)
+     604:	4621      	mov	r1, r4
+     606:	f7ff fec7 	bl	398 <_vprintk>
+}
+     60a:	9801      	ldr	r0, [sp, #4]
+     60c:	b002      	add	sp, #8
+     60e:	bd10      	pop	{r4, pc}
+     610:	000002e1 	.word	0x000002e1
+
+00000614 <printk>:
+{
+     614:	b40f      	push	{r0, r1, r2, r3}
+     616:	b507      	push	{r0, r1, r2, lr}
+     618:	a904      	add	r1, sp, #16
+     61a:	f851 0b04 	ldr.w	r0, [r1], #4
+	va_start(ap, fmt);
+     61e:	9101      	str	r1, [sp, #4]
+	ret = vprintk(fmt, ap);
+     620:	f7ff ffe8 	bl	5f4 <vprintk>
+}
+     624:	b003      	add	sp, #12
+     626:	f85d eb04 	ldr.w	lr, [sp], #4
+     62a:	b004      	add	sp, #16
+     62c:	4770      	bx	lr
+
+0000062e <_ConfigAbsSyms>:
+GEN_ABSOLUTE_SYM(CONFIG_MCUMGR_BUF_USER_DATA_SIZE, 7);
+GEN_ABSOLUTE_SYM(CONFIG_HAS_CMSIS, 1);
+GEN_ABSOLUTE_SYM(CONFIG_LIBMETAL_SRC_PATH, 1);
+GEN_ABSOLUTE_SYM(CONFIG_OPENAMP_SRC_PATH, 1);
+GEN_ABSOLUTE_SYM(CONFIG_TEST_EXTRA_STACKSIZE, 0);
+GEN_ABSOLUTE_SYM(CONFIG_NUM_IRQS, 34);
+     62e:	4770      	bx	lr
+
+00000630 <console_out>:
+		return c;
+	}
+
+#endif  /* CONFIG_UART_CONSOLE_DEBUG_SERVER_HOOKS */
+
+	if ('\n' == c) {
+     630:	280a      	cmp	r0, #10
+{
+     632:	b538      	push	{r3, r4, r5, lr}
+     634:	4604      	mov	r4, r0
+     636:	4d07      	ldr	r5, [pc, #28]	; (654 <console_out+0x24>)
+	if ('\n' == c) {
+     638:	d104      	bne.n	644 <console_out+0x14>
+		uart_poll_out(uart_console_dev, '\r');
+     63a:	6828      	ldr	r0, [r5, #0]
+						unsigned char out_char)
+{
+	const struct uart_driver_api *api =
+		(const struct uart_driver_api *)dev->driver_api;
+
+	return api->poll_out(dev, out_char);
+     63c:	210d      	movs	r1, #13
+     63e:	6843      	ldr	r3, [r0, #4]
+     640:	685b      	ldr	r3, [r3, #4]
+     642:	4798      	blx	r3
+	}
+	uart_poll_out(uart_console_dev, c);
+     644:	6828      	ldr	r0, [r5, #0]
+     646:	b2e1      	uxtb	r1, r4
+     648:	6843      	ldr	r3, [r0, #4]
+     64a:	685b      	ldr	r3, [r3, #4]
+     64c:	4798      	blx	r3
+
+	return c;
+}
+     64e:	4620      	mov	r0, r4
+     650:	bd38      	pop	{r3, r4, r5, pc}
+     652:	bf00      	nop
+     654:	20000000 	.word	0x20000000
+
+00000658 <uart_console_hook_install>:
+ */
+
+void uart_console_hook_install(void)
+{
+	__stdout_hook_install(console_out);
+	__printk_hook_install(console_out);
+     658:	4801      	ldr	r0, [pc, #4]	; (660 <uart_console_hook_install+0x8>)
+     65a:	f7ff be97 	b.w	38c <__printk_hook_install>
+     65e:	bf00      	nop
+     660:	00000631 	.word	0x00000631
+
+00000664 <uart_console_init>:
+ * @brief Initialize one UART as the console/debug port
+ *
+ * @return 0 if successful, otherwise failed.
+ */
+static int uart_console_init(struct device *arg)
+{
+     664:	b508      	push	{r3, lr}
+
+	ARG_UNUSED(arg);
+
+	uart_console_dev = device_get_binding(CONFIG_UART_CONSOLE_ON_DEV_NAME);
+     666:	4804      	ldr	r0, [pc, #16]	; (678 <uart_console_init+0x14>)
+     668:	f000 fb52 	bl	d10 <device_get_binding>
+     66c:	4b03      	ldr	r3, [pc, #12]	; (67c <uart_console_init+0x18>)
+     66e:	6018      	str	r0, [r3, #0]
+		}
+	}
+	k_busy_wait(1000000);
+#endif
+
+	uart_console_hook_install();
+     670:	f7ff fff2 	bl	658 <uart_console_hook_install>
+
+	return 0;
+}
+     674:	2000      	movs	r0, #0
+     676:	bd08      	pop	{r3, pc}
+     678:	0000154d 	.word	0x0000154d
+     67c:	20000000 	.word	0x20000000
+
+00000680 <_timer_int_handler>:
+	__asm__(" cpsie i"); /* re-enable interrupts (PRIMASK = 0) */
+
+#else /* !CONFIG_SYS_POWER_MANAGEMENT */
+
+	/* accumulate total counter value */
+	clock_accumulated_count += sys_clock_hw_cycles_per_tick;
+     680:	4a07      	ldr	r2, [pc, #28]	; (6a0 <_timer_int_handler+0x20>)
+     682:	4908      	ldr	r1, [pc, #32]	; (6a4 <_timer_int_handler+0x24>)
+{
+     684:	b508      	push	{r3, lr}
+	clock_accumulated_count += sys_clock_hw_cycles_per_tick;
+     686:	6809      	ldr	r1, [r1, #0]
+     688:	6813      	ldr	r3, [r2, #0]
+     68a:	440b      	add	r3, r1
+     68c:	6013      	str	r3, [r2, #0]
+
+	/*
+	 * one more tick has occurred -- don't need to do anything special since
+	 * timer is already configured to interrupt on the following tick
+	 */
+	_sys_clock_tick_announce();
+     68e:	4b06      	ldr	r3, [pc, #24]	; (6a8 <_timer_int_handler+0x28>)
+     690:	6818      	ldr	r0, [r3, #0]
+     692:	f000 fd2b 	bl	10ec <_nano_sys_clock_tick_announce>
+	read_timer_end_of_tick_handler();
+#endif
+
+	extern void _ExcExit(void);
+	_ExcExit();
+}
+     696:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+	_ExcExit();
+     69a:	f000 b81d 	b.w	6d8 <_ExcExit>
+     69e:	bf00      	nop
+     6a0:	20000004 	.word	0x20000004
+     6a4:	20000e34 	.word	0x20000e34
+     6a8:	20000e30 	.word	0x20000e30
+
+000006ac <_sys_clock_driver_init>:
+	SysTick->VAL = 0; /* also clears the countflag */
+     6ac:	2000      	movs	r0, #0
+  {
+    NVIC->IP[((uint32_t)IRQn)]               = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+  }
+  else
+  {
+    SCB->SHP[(((uint32_t)IRQn) & 0xFUL)-4UL] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+     6ae:	2120      	movs	r1, #32
+	 */
+
+	/* systick supports 24-bit H/W counter */
+	__ASSERT(sys_clock_hw_cycles_per_tick <= (1 << 24),
+		 "sys_clock_hw_cycles_per_tick too large");
+	sysTickReloadSet(sys_clock_hw_cycles_per_tick - 1);
+     6b0:	4b06      	ldr	r3, [pc, #24]	; (6cc <_sys_clock_driver_init+0x20>)
+     6b2:	681a      	ldr	r2, [r3, #0]
+	SysTick->LOAD = count;
+     6b4:	4b06      	ldr	r3, [pc, #24]	; (6d0 <_sys_clock_driver_init+0x24>)
+	sysTickReloadSet(sys_clock_hw_cycles_per_tick - 1);
+     6b6:	3a01      	subs	r2, #1
+	SysTick->LOAD = count;
+     6b8:	605a      	str	r2, [r3, #4]
+     6ba:	4a06      	ldr	r2, [pc, #24]	; (6d4 <_sys_clock_driver_init+0x28>)
+	SysTick->VAL = 0; /* also clears the countflag */
+     6bc:	6098      	str	r0, [r3, #8]
+     6be:	f882 1023 	strb.w	r1, [r2, #35]	; 0x23
+
+#endif /* CONFIG_TICKLESS_IDLE */
+
+	NVIC_SetPriority(SysTick_IRQn, _IRQ_PRIO_OFFSET);
+
+	SysTick->CTRL = ctrl;
+     6c2:	2207      	movs	r2, #7
+     6c4:	601a      	str	r2, [r3, #0]
+
+	SysTick->VAL = 0; /* triggers immediate reload of count */
+     6c6:	6098      	str	r0, [r3, #8]
+
+	return 0;
+}
+     6c8:	4770      	bx	lr
+     6ca:	bf00      	nop
+     6cc:	20000e34 	.word	0x20000e34
+     6d0:	e000e010 	.word	0xe000e010
+     6d4:	e000ed00 	.word	0xe000ed00
+
+000006d8 <_ExcExit>:
+ */
+
+SECTION_SUBSEC_FUNC(TEXT, _HandlerModeExit, _ExcExit)
+
+#ifdef CONFIG_PREEMPT_ENABLED
+    ldr r0, =_kernel
+     6d8:	4807      	ldr	r0, [pc, #28]	; (6f8 <_EXIT_EXC+0x4>)
+
+    ldr r1, [r0, #_kernel_offset_to_current]
+     6da:	6881      	ldr	r1, [r0, #8]
+
+    ldr r0, [r0, _kernel_offset_to_ready_q_cache]
+     6dc:	69c0      	ldr	r0, [r0, #28]
+    cmp r0, r1
+     6de:	4288      	cmp	r0, r1
+    beq _EXIT_EXC
+     6e0:	d008      	beq.n	6f4 <_EXIT_EXC>
+
+#ifdef CONFIG_TIMESLICING
+    push {lr}
+     6e2:	b500      	push	{lr}
+    bl _update_time_slice_before_swap
+     6e4:	f000 fcee 	bl	10c4 <_update_time_slice_before_swap>
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+    pop {r0}
+    mov lr, r0
+#else
+    pop {lr}
+     6e8:	f85d eb04 	ldr.w	lr, [sp], #4
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+#endif /* CONFIG_TIMESLICING */
+
+    /* context switch required, pend the PendSV exception */
+    ldr r1, =_SCS_ICSR
+     6ec:	4903      	ldr	r1, [pc, #12]	; (6fc <_EXIT_EXC+0x8>)
+    ldr r2, =_SCS_ICSR_PENDSV
+     6ee:	f04f 5280 	mov.w	r2, #268435456	; 0x10000000
+    str r2, [r1]
+     6f2:	600a      	str	r2, [r1, #0]
+
+000006f4 <_EXIT_EXC>:
+#else
+    pop {lr}
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+#endif /* CONFIG_STACK_SENTINEL */
+
+    bx lr
+     6f4:	4770      	bx	lr
+     6f6:	0000      	.short	0x0000
+    ldr r0, =_kernel
+     6f8:	200000e0 	.word	0x200000e0
+    ldr r1, =_SCS_ICSR
+     6fc:	e000ed04 	.word	0xe000ed04
+
+00000700 <_IntLibInit>:
+ * @return N/A
+ */
+
+void _IntLibInit(void)
+{
+	int irq = 0;
+     700:	2300      	movs	r3, #0
+    NVIC->IP[((uint32_t)IRQn)]               = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+     702:	2120      	movs	r1, #32
+     704:	4803      	ldr	r0, [pc, #12]	; (714 <_IntLibInit+0x14>)
+     706:	18c2      	adds	r2, r0, r3
+
+	for (; irq < CONFIG_NUM_IRQS; irq++) {
+     708:	3301      	adds	r3, #1
+     70a:	2b22      	cmp	r3, #34	; 0x22
+     70c:	f882 1300 	strb.w	r1, [r2, #768]	; 0x300
+     710:	d1f9      	bne.n	706 <_IntLibInit+0x6>
+		NVIC_SetPriority((IRQn_Type)irq, _IRQ_PRIO_OFFSET);
+	}
+}
+     712:	4770      	bx	lr
+     714:	e000e100 	.word	0xe000e100
+
+00000718 <__swap>:
+#ifdef CONFIG_EXECUTION_BENCHMARKING
+	read_timer_start_of_swap();
+#endif
+
+	/* store off key and return value */
+	_current->arch.basepri = key;
+     718:	4a08      	ldr	r2, [pc, #32]	; (73c <__swap+0x24>)
+	_current->arch.swap_return_value = _k_neg_eagain;
+     71a:	4909      	ldr	r1, [pc, #36]	; (740 <__swap+0x28>)
+	_current->arch.basepri = key;
+     71c:	6893      	ldr	r3, [r2, #8]
+	_current->arch.swap_return_value = _k_neg_eagain;
+     71e:	6809      	ldr	r1, [r1, #0]
+	_current->arch.basepri = key;
+     720:	6618      	str	r0, [r3, #96]	; 0x60
+	_current->arch.swap_return_value = _k_neg_eagain;
+     722:	6659      	str	r1, [r3, #100]	; 0x64
+
+	/* set pending bit to make sure we will take a PendSV exception */
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+     724:	4907      	ldr	r1, [pc, #28]	; (744 <__swap+0x2c>)
+     726:	684b      	ldr	r3, [r1, #4]
+     728:	f043 5380 	orr.w	r3, r3, #268435456	; 0x10000000
+     72c:	604b      	str	r3, [r1, #4]
+	if (key) {
+		return;
+	}
+	__asm__ volatile("cpsie i" : : : "memory");
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+     72e:	2300      	movs	r3, #0
+     730:	f383 8811 	msr	BASEPRI, r3
+
+	/* clear mask or enable all irqs to take a pendsv */
+	irq_unlock(0);
+
+	return _current->arch.swap_return_value;
+     734:	6893      	ldr	r3, [r2, #8]
+}
+     736:	6e58      	ldr	r0, [r3, #100]	; 0x64
+     738:	4770      	bx	lr
+     73a:	bf00      	nop
+     73c:	200000e0 	.word	0x200000e0
+     740:	00001990 	.word	0x00001990
+     744:	e000ed00 	.word	0xe000ed00
+
+00000748 <__pendsv>:
+    pop {lr}
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+#endif /* CONFIG_KERNEL_EVENT_LOGGER_CONTEXT_SWITCH  */
+
+    /* load _kernel into r1 and current k_thread into r2 */
+    ldr r1, =_kernel
+     748:	490e      	ldr	r1, [pc, #56]	; (784 <__pendsv+0x3c>)
+    ldr r2, [r1, #_kernel_offset_to_current]
+     74a:	688a      	ldr	r2, [r1, #8]
+
+    /* addr of callee-saved regs in thread in r0 */
+    ldr r0, =_thread_offset_to_callee_saved
+     74c:	202c      	movs	r0, #44	; 0x2c
+    add r0, r2
+     74e:	4410      	add	r0, r2
+
+    /* save callee-saved + psp in thread */
+    mrs ip, PSP
+     750:	f3ef 8c09 	mrs	ip, PSP
+    mov r6, r11
+    mov r7, ip
+    /* store r8-12 */
+    stmea r0!, {r3-r7}
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+    stmia r0, {v1-v8, ip}
+     754:	e880 1ff0 	stmia.w	r0, {r4, r5, r6, r7, r8, r9, sl, fp, ip}
+     * don't clear it yet. PendSV must not be cleared until
+     * the new thread is context-switched in since all decisions
+     * to pend PendSV have been taken with the current kernel
+     * state and this is what we're handling currently.
+     */
+    ldr v4, =_SCS_ICSR
+     758:	4f0b      	ldr	r7, [pc, #44]	; (788 <__pendsv+0x40>)
+    ldr v3, =_SCS_ICSR_UNPENDSV
+     75a:	f04f 6600 	mov.w	r6, #134217728	; 0x8000000
+
+    /* protect the kernel state while we play with the thread lists */
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+    cpsid i
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+    movs.n r0, #_EXC_IRQ_DEFAULT_PRIO
+     75e:	2020      	movs	r0, #32
+    msr BASEPRI, r0
+     760:	f380 8811 	msr	BASEPRI, r0
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+
+    /* _kernel is still in r1 */
+
+    /* fetch the thread to run from the ready queue cache */
+    ldr r2, [r1, _kernel_offset_to_ready_q_cache]
+     764:	69ca      	ldr	r2, [r1, #28]
+
+    str r2, [r1, #_kernel_offset_to_current]
+     766:	608a      	str	r2, [r1, #8]
+     * since they were based on the previous kernel state and this
+     * has been handled.
+     */
+
+    /* _SCS_ICSR is still in v4 and _SCS_ICSR_UNPENDSV in v3 */
+    str v3, [v4, #0]
+     768:	603e      	str	r6, [r7, #0]
+
+    /* Restore previous interrupt disable state (irq_lock key) */
+    ldr r0, [r2, #_thread_offset_to_basepri]
+     76a:	6e10      	ldr	r0, [r2, #96]	; 0x60
+    movs.n r3, #0
+     76c:	2300      	movs	r3, #0
+    str r3, [r2, #_thread_offset_to_basepri]
+     76e:	6613      	str	r3, [r2, #96]	; 0x60
+    /* restore r4-r7, go back 9*4 bytes to the start of the stored block */
+    subs r0, #36
+    ldmia r0!, {r4-r7}
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+    /* restore BASEPRI for the incoming thread */
+    msr BASEPRI, r0
+     770:	f380 8811 	msr	BASEPRI, r0
+    blx configure_mpu_user_context
+    pop {r2, lr}
+#endif
+
+    /* load callee-saved + psp from thread */
+    add r0, r2, #_thread_offset_to_callee_saved
+     774:	f102 002c 	add.w	r0, r2, #44	; 0x2c
+    ldmia r0, {v1-v8, ip}
+     778:	e890 1ff0 	ldmia.w	r0, {r4, r5, r6, r7, r8, r9, sl, fp, ip}
+#else
+#error Unknown ARM architecture
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+
+    msr PSP, ip
+     77c:	f38c 8809 	msr	PSP, ip
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+    ldm sp!,{r0-r3} /* Load back regs ro to r4 */
+#endif /* CONFIG_EXECUTION_BENCHMARKING */
+
+    /* exc return */
+    bx lr
+     780:	4770      	bx	lr
+     782:	0000      	.short	0x0000
+    ldr r1, =_kernel
+     784:	200000e0 	.word	0x200000e0
+    ldr v4, =_SCS_ICSR
+     788:	e000ed04 	.word	0xe000ed04
+
+0000078c <__svc>:
+ *
+ * @return N/A
+ */
+
+SECTION_FUNC(TEXT, __svc)
+    tst lr, #0x4    /* did we come from thread mode ? */
+     78c:	f01e 0f04 	tst.w	lr, #4
+    ite eq  /* if zero (equal), came from handler mode */
+     790:	bf0c      	ite	eq
+        mrseq r0, MSP   /* handler mode, stack frame is on MSP */
+     792:	f3ef 8008 	mrseq	r0, MSP
+        mrsne r0, PSP   /* thread mode, stack frame is on PSP */
+     796:	f3ef 8009 	mrsne	r0, PSP
+
+    ldr r1, [r0, #24]   /* grab address of PC from stack frame */
+     79a:	6981      	ldr	r1, [r0, #24]
+    /* SVC is a two-byte instruction, point to it and read  encoding */
+    ldrh r1, [r1, #-2]
+     79c:	f831 1c02 	ldrh.w	r1, [r1, #-2]
+    * 2: kernel panic or oops (software generated fatal exception)
+    * 3: System call
+    * Planned implementation of system calls for memory protection will
+    * expand this case.
+    */
+    ands r1, #0xff
+     7a0:	f011 01ff 	ands.w	r1, r1, #255	; 0xff
+    tst r2, #0x1
+    bne _oops
+
+#endif
+
+    cmp r1, #2
+     7a4:	2902      	cmp	r1, #2
+    beq _oops
+     7a6:	d0ff      	beq.n	7a8 <_oops>
+
+000007a8 <_oops>:
+    /* exception return is done in _IntExit() */
+    b _IntExit
+#endif
+
+_oops:
+    push {lr}
+     7a8:	b500      	push	{lr}
+    blx _do_kernel_oops
+     7aa:	f000 f9c3 	bl	b34 <_do_kernel_oops>
+    pop {pc}
+     7ae:	bd00      	pop	{pc}
+
+000007b0 <_FaultThreadShow.isra.2>:
+ *
+ * See _FaultDump() for example.
+ *
+ * @return N/A
+ */
+static void _FaultThreadShow(const NANO_ESF *esf)
+     7b0:	b510      	push	{r4, lr}
+     7b2:	4604      	mov	r4, r0
+K_SYSCALL_DECLARE0(K_SYSCALL_K_CURRENT_GET, k_current_get, k_tid_t);
+     7b4:	f000 fc94 	bl	10e0 <_impl_k_current_get>
+{
+	PR_EXC("  Executing thread ID (thread): %p\n"
+     7b8:	6822      	ldr	r2, [r4, #0]
+     7ba:	4601      	mov	r1, r0
+	       "  Faulting instruction address:  0x%x\n",
+	       k_current_get(), esf->pc);
+}
+     7bc:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+	PR_EXC("  Executing thread ID (thread): %p\n"
+     7c0:	4801      	ldr	r0, [pc, #4]	; (7c8 <_FaultThreadShow.isra.2+0x18>)
+     7c2:	f7ff bf27 	b.w	614 <printk>
+     7c6:	bf00      	nop
+     7c8:	00001697 	.word	0x00001697
+
+000007cc <_MpuFault>:
+ * See _FaultDump() for example.
+ *
+ * @return error code to identify the fatal error reason
+ */
+static u32_t _MpuFault(const NANO_ESF *esf, int fromHardFault)
+{
+     7cc:	b538      	push	{r3, r4, r5, lr}
+     7ce:	4604      	mov	r4, r0
+	u32_t reason = _NANO_ERR_HW_EXCEPTION;
+
+	PR_EXC("***** MPU FAULT *****\n");
+     7d0:	4817      	ldr	r0, [pc, #92]	; (830 <CONFIG_ISR_STACK_SIZE+0x30>)
+{
+     7d2:	460d      	mov	r5, r1
+	PR_EXC("***** MPU FAULT *****\n");
+     7d4:	f7ff ff1e 	bl	614 <printk>
+
+	_FaultThreadShow(esf);
+     7d8:	f104 0018 	add.w	r0, r4, #24
+
+	if (SCB->CFSR & SCB_CFSR_MSTKERR_Msk) {
+     7dc:	4c15      	ldr	r4, [pc, #84]	; (834 <CONFIG_ISR_STACK_SIZE+0x34>)
+	_FaultThreadShow(esf);
+     7de:	f7ff ffe7 	bl	7b0 <_FaultThreadShow.isra.2>
+	if (SCB->CFSR & SCB_CFSR_MSTKERR_Msk) {
+     7e2:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     7e4:	06db      	lsls	r3, r3, #27
+     7e6:	d502      	bpl.n	7ee <_MpuFault+0x22>
+		PR_EXC("  Stacking error\n");
+     7e8:	4813      	ldr	r0, [pc, #76]	; (838 <CONFIG_ISR_STACK_SIZE+0x38>)
+     7ea:	f7ff ff13 	bl	614 <printk>
+	}
+	if (SCB->CFSR & SCB_CFSR_MUNSTKERR_Msk) {
+     7ee:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     7f0:	0718      	lsls	r0, r3, #28
+     7f2:	d502      	bpl.n	7fa <_MpuFault+0x2e>
+		PR_EXC("  Unstacking error\n");
+     7f4:	4811      	ldr	r0, [pc, #68]	; (83c <CONFIG_ISR_STACK_SIZE+0x3c>)
+     7f6:	f7ff ff0d 	bl	614 <printk>
+	}
+	if (SCB->CFSR & SCB_CFSR_DACCVIOL_Msk) {
+     7fa:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     7fc:	0799      	lsls	r1, r3, #30
+     7fe:	d50e      	bpl.n	81e <CONFIG_ISR_STACK_SIZE+0x1e>
+		PR_EXC("  Data Access Violation\n");
+     800:	480f      	ldr	r0, [pc, #60]	; (840 <CONFIG_ISR_STACK_SIZE+0x40>)
+     802:	f7ff ff07 	bl	614 <printk>
+		 * The MMFAR address is valid only if this bit is 1.
+		 *
+		 * Software must follow this sequence because another higher
+		 * priority exception might change the MMFAR value.
+		 */
+		u32_t mmfar = SCB->MMFAR;
+     806:	6b61      	ldr	r1, [r4, #52]	; 0x34
+
+		if (SCB->CFSR & SCB_CFSR_MMARVALID_Msk) {
+     808:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     80a:	061a      	lsls	r2, r3, #24
+     80c:	d507      	bpl.n	81e <CONFIG_ISR_STACK_SIZE+0x1e>
+			PR_EXC("  Address: 0x%x\n", mmfar);
+     80e:	480d      	ldr	r0, [pc, #52]	; (844 <CONFIG_ISR_STACK_SIZE+0x44>)
+     810:	f7ff ff00 	bl	614 <printk>
+			if (fromHardFault) {
+     814:	b11d      	cbz	r5, 81e <CONFIG_ISR_STACK_SIZE+0x1e>
+				/* clear SCB_MMAR[VALID] to reset */
+				SCB->CFSR &= ~SCB_CFSR_MMARVALID_Msk;
+     816:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     818:	f023 0380 	bic.w	r3, r3, #128	; 0x80
+     81c:	62a3      	str	r3, [r4, #40]	; 0x28
+#else
+		(void)mmfar;
+#endif /* CONFIG_HW_STACK_PROTECTION */
+		}
+	}
+	if (SCB->CFSR & SCB_CFSR_IACCVIOL_Msk) {
+     81e:	4b05      	ldr	r3, [pc, #20]	; (834 <CONFIG_ISR_STACK_SIZE+0x34>)
+     820:	6a9b      	ldr	r3, [r3, #40]	; 0x28
+     822:	07db      	lsls	r3, r3, #31
+     824:	d502      	bpl.n	82c <CONFIG_ISR_STACK_SIZE+0x2c>
+		PR_EXC("  Instruction Access Violation\n");
+     826:	4808      	ldr	r0, [pc, #32]	; (848 <CONFIG_ISR_STACK_SIZE+0x48>)
+     828:	f7ff fef4 	bl	614 <printk>
+		PR_EXC("  Floating-point lazy state preservation error\n");
+	}
+#endif /* !defined(CONFIG_ARMV7_M_ARMV8_M_FP) */
+
+	return reason;
+}
+     82c:	2000      	movs	r0, #0
+     82e:	bd38      	pop	{r3, r4, r5, pc}
+     830:	000016e1 	.word	0x000016e1
+     834:	e000ed00 	.word	0xe000ed00
+     838:	000016f8 	.word	0x000016f8
+     83c:	0000170a 	.word	0x0000170a
+     840:	0000171e 	.word	0x0000171e
+     844:	00001737 	.word	0x00001737
+     848:	00001748 	.word	0x00001748
+
+0000084c <_UsageFault>:
+ * See _FaultDump() for example.
+ *
+ * @return error code to identify the fatal error reason
+ */
+static u32_t _UsageFault(const NANO_ESF *esf)
+{
+     84c:	b510      	push	{r4, lr}
+     84e:	4604      	mov	r4, r0
+	u32_t reason = _NANO_ERR_HW_EXCEPTION;
+
+	PR_EXC("***** USAGE FAULT *****\n");
+     850:	481a      	ldr	r0, [pc, #104]	; (8bc <_UsageFault+0x70>)
+     852:	f7ff fedf 	bl	614 <printk>
+
+	_FaultThreadShow(esf);
+     856:	f104 0018 	add.w	r0, r4, #24
+
+	/* bits are sticky: they stack and must be reset */
+	if (SCB->CFSR & SCB_CFSR_DIVBYZERO_Msk) {
+     85a:	4c19      	ldr	r4, [pc, #100]	; (8c0 <_UsageFault+0x74>)
+	_FaultThreadShow(esf);
+     85c:	f7ff ffa8 	bl	7b0 <_FaultThreadShow.isra.2>
+	if (SCB->CFSR & SCB_CFSR_DIVBYZERO_Msk) {
+     860:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     862:	019a      	lsls	r2, r3, #6
+     864:	d502      	bpl.n	86c <_UsageFault+0x20>
+		PR_EXC("  Division by zero\n");
+     866:	4817      	ldr	r0, [pc, #92]	; (8c4 <_UsageFault+0x78>)
+     868:	f7ff fed4 	bl	614 <printk>
+	}
+	if (SCB->CFSR & SCB_CFSR_UNALIGNED_Msk) {
+     86c:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     86e:	01db      	lsls	r3, r3, #7
+     870:	d502      	bpl.n	878 <_UsageFault+0x2c>
+		PR_EXC("  Unaligned memory access\n");
+     872:	4815      	ldr	r0, [pc, #84]	; (8c8 <_UsageFault+0x7c>)
+     874:	f7ff fece 	bl	614 <printk>
+		 */
+		reason = _NANO_ERR_STACK_CHK_FAIL;
+#endif /* CONFIG_HW_STACK_PROTECTION */
+	}
+#endif /* CONFIG_ARMV8_M_MAINLINE */
+	if (SCB->CFSR & SCB_CFSR_NOCP_Msk) {
+     878:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     87a:	0318      	lsls	r0, r3, #12
+     87c:	d502      	bpl.n	884 <_UsageFault+0x38>
+		PR_EXC("  No coprocessor instructions\n");
+     87e:	4813      	ldr	r0, [pc, #76]	; (8cc <_UsageFault+0x80>)
+     880:	f7ff fec8 	bl	614 <printk>
+	}
+	if (SCB->CFSR & SCB_CFSR_INVPC_Msk) {
+     884:	4c0e      	ldr	r4, [pc, #56]	; (8c0 <_UsageFault+0x74>)
+     886:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     888:	0359      	lsls	r1, r3, #13
+     88a:	d502      	bpl.n	892 <_UsageFault+0x46>
+		PR_EXC("  Illegal load of EXC_RETURN into PC\n");
+     88c:	4810      	ldr	r0, [pc, #64]	; (8d0 <_UsageFault+0x84>)
+     88e:	f7ff fec1 	bl	614 <printk>
+	}
+	if (SCB->CFSR & SCB_CFSR_INVSTATE_Msk) {
+     892:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     894:	039a      	lsls	r2, r3, #14
+     896:	d502      	bpl.n	89e <_UsageFault+0x52>
+		PR_EXC("  Illegal use of the EPSR\n");
+     898:	480e      	ldr	r0, [pc, #56]	; (8d4 <_UsageFault+0x88>)
+     89a:	f7ff febb 	bl	614 <printk>
+	}
+	if (SCB->CFSR & SCB_CFSR_UNDEFINSTR_Msk) {
+     89e:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     8a0:	03db      	lsls	r3, r3, #15
+     8a2:	d502      	bpl.n	8aa <_UsageFault+0x5e>
+		PR_EXC("  Attempt to execute undefined instruction\n");
+     8a4:	480c      	ldr	r0, [pc, #48]	; (8d8 <_UsageFault+0x8c>)
+     8a6:	f7ff feb5 	bl	614 <printk>
+	}
+
+	/* clear USFR sticky bits */
+	SCB->CFSR |= SCB_CFSR_USGFAULTSR_Msk;
+     8aa:	4a05      	ldr	r2, [pc, #20]	; (8c0 <_UsageFault+0x74>)
+
+	return reason;
+}
+     8ac:	2000      	movs	r0, #0
+	SCB->CFSR |= SCB_CFSR_USGFAULTSR_Msk;
+     8ae:	6a93      	ldr	r3, [r2, #40]	; 0x28
+     8b0:	ea6f 4303 	mvn.w	r3, r3, lsl #16
+     8b4:	ea6f 4313 	mvn.w	r3, r3, lsr #16
+     8b8:	6293      	str	r3, [r2, #40]	; 0x28
+}
+     8ba:	bd10      	pop	{r4, pc}
+     8bc:	00001768 	.word	0x00001768
+     8c0:	e000ed00 	.word	0xe000ed00
+     8c4:	00001781 	.word	0x00001781
+     8c8:	00001795 	.word	0x00001795
+     8cc:	000017b0 	.word	0x000017b0
+     8d0:	000017cf 	.word	0x000017cf
+     8d4:	000017f5 	.word	0x000017f5
+     8d8:	00001810 	.word	0x00001810
+
+000008dc <_BusFault>:
+{
+     8dc:	b538      	push	{r3, r4, r5, lr}
+     8de:	4604      	mov	r4, r0
+	PR_EXC("***** BUS FAULT *****\n");
+     8e0:	481b      	ldr	r0, [pc, #108]	; (950 <_BusFault+0x74>)
+{
+     8e2:	460d      	mov	r5, r1
+	PR_EXC("***** BUS FAULT *****\n");
+     8e4:	f7ff fe96 	bl	614 <printk>
+	_FaultThreadShow(esf);
+     8e8:	f104 0018 	add.w	r0, r4, #24
+	if (SCB->CFSR & SCB_CFSR_STKERR_Msk) {
+     8ec:	4c19      	ldr	r4, [pc, #100]	; (954 <_BusFault+0x78>)
+	_FaultThreadShow(esf);
+     8ee:	f7ff ff5f 	bl	7b0 <_FaultThreadShow.isra.2>
+	if (SCB->CFSR & SCB_CFSR_STKERR_Msk) {
+     8f2:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     8f4:	04d9      	lsls	r1, r3, #19
+     8f6:	d504      	bpl.n	902 <_BusFault+0x26>
+		PR_EXC("  Stacking error\n");
+     8f8:	4817      	ldr	r0, [pc, #92]	; (958 <_BusFault+0x7c>)
+}
+     8fa:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+		PR_EXC("  Instruction bus error\n");
+     8fe:	f7ff be89 	b.w	614 <printk>
+	} else if (SCB->CFSR & SCB_CFSR_UNSTKERR_Msk) {
+     902:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     904:	051a      	lsls	r2, r3, #20
+     906:	d501      	bpl.n	90c <_BusFault+0x30>
+		PR_EXC("  Unstacking error\n");
+     908:	4814      	ldr	r0, [pc, #80]	; (95c <_BusFault+0x80>)
+     90a:	e7f6      	b.n	8fa <_BusFault+0x1e>
+	} else if (SCB->CFSR & SCB_CFSR_PRECISERR_Msk) {
+     90c:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     90e:	059b      	lsls	r3, r3, #22
+     910:	d514      	bpl.n	93c <_BusFault+0x60>
+		PR_EXC("  Precise data bus error\n");
+     912:	4813      	ldr	r0, [pc, #76]	; (960 <_BusFault+0x84>)
+     914:	f7ff fe7e 	bl	614 <printk>
+		STORE_xFAR(bfar, SCB->BFAR);
+     918:	6ba1      	ldr	r1, [r4, #56]	; 0x38
+		if (SCB->CFSR & SCB_CFSR_BFARVALID_Msk) {
+     91a:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     91c:	0418      	lsls	r0, r3, #16
+     91e:	d507      	bpl.n	930 <_BusFault+0x54>
+			PR_EXC("  Address: 0x%x\n", bfar);
+     920:	4810      	ldr	r0, [pc, #64]	; (964 <_BusFault+0x88>)
+     922:	f7ff fe77 	bl	614 <printk>
+			if (fromHardFault) {
+     926:	b11d      	cbz	r5, 930 <_BusFault+0x54>
+				SCB->CFSR &= ~SCB_CFSR_BFARVALID_Msk;
+     928:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     92a:	f423 4300 	bic.w	r3, r3, #32768	; 0x8000
+     92e:	62a3      	str	r3, [r4, #40]	; 0x28
+		if (SCB->CFSR & SCB_CFSR_IMPRECISERR_Msk) {
+     930:	4b08      	ldr	r3, [pc, #32]	; (954 <_BusFault+0x78>)
+     932:	6a9b      	ldr	r3, [r3, #40]	; 0x28
+     934:	0559      	lsls	r1, r3, #21
+     936:	d509      	bpl.n	94c <_BusFault+0x70>
+			PR_EXC("  Imprecise data bus error\n");
+     938:	480b      	ldr	r0, [pc, #44]	; (968 <_BusFault+0x8c>)
+     93a:	e7de      	b.n	8fa <_BusFault+0x1e>
+	} else if (SCB->CFSR & SCB_CFSR_IMPRECISERR_Msk) {
+     93c:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     93e:	055a      	lsls	r2, r3, #21
+     940:	d4fa      	bmi.n	938 <_BusFault+0x5c>
+	} else if (SCB->CFSR & SCB_CFSR_IBUSERR_Msk) {
+     942:	6aa3      	ldr	r3, [r4, #40]	; 0x28
+     944:	05db      	lsls	r3, r3, #23
+     946:	d501      	bpl.n	94c <_BusFault+0x70>
+		PR_EXC("  Instruction bus error\n");
+     948:	4808      	ldr	r0, [pc, #32]	; (96c <_BusFault+0x90>)
+     94a:	e7d6      	b.n	8fa <_BusFault+0x1e>
+     94c:	bd38      	pop	{r3, r4, r5, pc}
+     94e:	bf00      	nop
+     950:	0000155e 	.word	0x0000155e
+     954:	e000ed00 	.word	0xe000ed00
+     958:	000016f8 	.word	0x000016f8
+     95c:	0000170a 	.word	0x0000170a
+     960:	00001575 	.word	0x00001575
+     964:	00001737 	.word	0x00001737
+     968:	0000158f 	.word	0x0000158f
+     96c:	000015ab 	.word	0x000015ab
+
+00000970 <_Fault>:
+ *
+ * Note: exc_return argument shall only be used by the Fault handler if we are
+ * building Secure Firmware.
+ */
+void _Fault(const NANO_ESF *esf, u32_t exc_return)
+{
+     970:	b538      	push	{r3, r4, r5, lr}
+	u32_t reason = _NANO_ERR_HW_EXCEPTION;
+	int fault = SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk;
+     972:	4c27      	ldr	r4, [pc, #156]	; (a10 <_Fault+0xa0>)
+{
+     974:	4605      	mov	r5, r0
+	int fault = SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk;
+     976:	6863      	ldr	r3, [r4, #4]
+     978:	f3c3 0308 	ubfx	r3, r3, #0, #9
+	switch (fault) {
+     97c:	1eda      	subs	r2, r3, #3
+     97e:	2a09      	cmp	r2, #9
+     980:	d83b      	bhi.n	9fa <_Fault+0x8a>
+     982:	e8df f002 	tbb	[pc, r2]
+     986:	3405      	.short	0x3405
+     988:	3a3a3036 	.word	0x3a3a3036
+     98c:	383a3a3a 	.word	0x383a3a3a
+	PR_EXC("***** HARD FAULT *****\n");
+     990:	4820      	ldr	r0, [pc, #128]	; (a14 <_Fault+0xa4>)
+     992:	f7ff fe3f 	bl	614 <printk>
+	if (SCB->HFSR & SCB_HFSR_VECTTBL_Msk) {
+     996:	6ae3      	ldr	r3, [r4, #44]	; 0x2c
+     998:	079a      	lsls	r2, r3, #30
+     99a:	d503      	bpl.n	9a4 <_Fault+0x34>
+		PR_EXC("  Bus fault on vector table read\n");
+     99c:	481e      	ldr	r0, [pc, #120]	; (a18 <_Fault+0xa8>)
+	PR_EXC("***** Debug monitor exception (not implemented) *****\n");
+     99e:	f7ff fe39 	bl	614 <printk>
+     9a2:	e002      	b.n	9aa <_Fault+0x3a>
+	} else if (SCB->HFSR & SCB_HFSR_FORCED_Msk) {
+     9a4:	6ae3      	ldr	r3, [r4, #44]	; 0x2c
+     9a6:	005b      	lsls	r3, r3, #1
+     9a8:	d401      	bmi.n	9ae <_Fault+0x3e>
+	u32_t reason = _NANO_ERR_HW_EXCEPTION;
+     9aa:	2000      	movs	r0, #0
+     9ac:	e009      	b.n	9c2 <_Fault+0x52>
+		PR_EXC("  Fault escalation (see below)\n");
+     9ae:	481b      	ldr	r0, [pc, #108]	; (a1c <_Fault+0xac>)
+     9b0:	f7ff fe30 	bl	614 <printk>
+		if (SCB_MMFSR) {
+     9b4:	4b1a      	ldr	r3, [pc, #104]	; (a20 <_Fault+0xb0>)
+     9b6:	781b      	ldrb	r3, [r3, #0]
+     9b8:	b143      	cbz	r3, 9cc <_Fault+0x5c>
+			reason = _MpuFault(esf, 1);
+     9ba:	2101      	movs	r1, #1
+		reason = _MpuFault(esf, 0);
+     9bc:	4628      	mov	r0, r5
+     9be:	f7ff ff05 	bl	7cc <_MpuFault>
+#else
+	(void) exc_return;
+	FAULT_DUMP(reason, esf, fault);
+#endif /* CONFIG_ARM_SECURE_FIRMWARE*/
+
+	_SysFatalErrorHandler(reason, esf);
+     9c2:	4629      	mov	r1, r5
+}
+     9c4:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+	_SysFatalErrorHandler(reason, esf);
+     9c8:	f000 b8b8 	b.w	b3c <_SysFatalErrorHandler>
+		} else if (SCB_BFSR) {
+     9cc:	4b15      	ldr	r3, [pc, #84]	; (a24 <_Fault+0xb4>)
+     9ce:	781b      	ldrb	r3, [r3, #0]
+     9d0:	b123      	cbz	r3, 9dc <_Fault+0x6c>
+			_BusFault(esf, 1);
+     9d2:	2101      	movs	r1, #1
+		_BusFault(esf, 0);
+     9d4:	4628      	mov	r0, r5
+     9d6:	f7ff ff81 	bl	8dc <_BusFault>
+     9da:	e7e6      	b.n	9aa <_Fault+0x3a>
+		} else if (SCB_UFSR) {
+     9dc:	4b12      	ldr	r3, [pc, #72]	; (a28 <_Fault+0xb8>)
+     9de:	881b      	ldrh	r3, [r3, #0]
+     9e0:	b29b      	uxth	r3, r3
+     9e2:	2b00      	cmp	r3, #0
+     9e4:	d0e1      	beq.n	9aa <_Fault+0x3a>
+		reason = _UsageFault(esf);
+     9e6:	4628      	mov	r0, r5
+     9e8:	f7ff ff30 	bl	84c <_UsageFault>
+     9ec:	e7e9      	b.n	9c2 <_Fault+0x52>
+		reason = _MpuFault(esf, 0);
+     9ee:	2100      	movs	r1, #0
+     9f0:	e7e4      	b.n	9bc <_Fault+0x4c>
+		_BusFault(esf, 0);
+     9f2:	2100      	movs	r1, #0
+     9f4:	e7ee      	b.n	9d4 <_Fault+0x64>
+	PR_EXC("***** Debug monitor exception (not implemented) *****\n");
+     9f6:	480d      	ldr	r0, [pc, #52]	; (a2c <_Fault+0xbc>)
+     9f8:	e7d1      	b.n	99e <_Fault+0x2e>
+	PR_EXC("***** %s %d) *****\n",
+     9fa:	480d      	ldr	r0, [pc, #52]	; (a30 <_Fault+0xc0>)
+     9fc:	490d      	ldr	r1, [pc, #52]	; (a34 <_Fault+0xc4>)
+     9fe:	f1a3 0210 	sub.w	r2, r3, #16
+     a02:	2b0f      	cmp	r3, #15
+     a04:	bfd8      	it	le
+     a06:	4601      	movle	r1, r0
+     a08:	480b      	ldr	r0, [pc, #44]	; (a38 <_Fault+0xc8>)
+     a0a:	f7ff fe03 	bl	614 <printk>
+     a0e:	e7cc      	b.n	9aa <_Fault+0x3a>
+     a10:	e000ed00 	.word	0xe000ed00
+     a14:	000015f2 	.word	0x000015f2
+     a18:	0000160a 	.word	0x0000160a
+     a1c:	0000162c 	.word	0x0000162c
+     a20:	e000ed28 	.word	0xe000ed28
+     a24:	e000ed29 	.word	0xe000ed29
+     a28:	e000ed2a 	.word	0xe000ed2a
+     a2c:	0000164c 	.word	0x0000164c
+     a30:	000015c4 	.word	0x000015c4
+     a34:	000015d9 	.word	0x000015d9
+     a38:	00001683 	.word	0x00001683
+
+00000a3c <_FaultInit>:
+ */
+void _FaultInit(void)
+{
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+	SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk;
+     a3c:	4a02      	ldr	r2, [pc, #8]	; (a48 <_FaultInit+0xc>)
+     a3e:	6953      	ldr	r3, [r2, #20]
+     a40:	f043 0310 	orr.w	r3, r3, #16
+     a44:	6153      	str	r3, [r2, #20]
+     a46:	4770      	bx	lr
+     a48:	e000ed00 	.word	0xe000ed00
+
+00000a4c <_irq_spurious>:
+ * @return N/A
+ */
+void _irq_spurious(void *unused)
+{
+	ARG_UNUSED(unused);
+	__reserved();
+     a4c:	f000 b832 	b.w	ab4 <__bus_fault>
+
+00000a50 <_new_thread>:
+
+void _new_thread(struct k_thread *thread, k_thread_stack_t *stack,
+		 size_t stackSize, k_thread_entry_t pEntry,
+		 void *parameter1, void *parameter2, void *parameter3,
+		 int priority, unsigned int options)
+{
+     a50:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+     a52:	4617      	mov	r7, r2
+     a54:	460c      	mov	r4, r1
+     a56:	461e      	mov	r6, r3
+	 * if it isn't.
+	 */
+	*((u32_t *)pStack) = STACK_SENTINEL;
+#endif /* CONFIG_STACK_SENTINEL */
+	/* Initialize various struct k_thread members */
+	_init_thread_base(&thread->base, prio, _THREAD_PRESTART, options);
+     a58:	2204      	movs	r2, #4
+     a5a:	9b0a      	ldr	r3, [sp, #40]	; 0x28
+     a5c:	9909      	ldr	r1, [sp, #36]	; 0x24
+     a5e:	4605      	mov	r5, r0
+     a60:	f000 fd28 	bl	14b4 <_init_thread_base>
+
+	/* static threads overwrite it afterwards with real value */
+	thread->init_data = NULL;
+     a64:	2300      	movs	r3, #0
+
+	_new_thread_init(thread, pStackMem, stackEnd - pStackMem, priority,
+			 options);
+
+	/* carve the thread entry struct from the "base" of the stack */
+	pInitCtx = (struct __esf *)(STACK_ROUND_DOWN(stackEnd -
+     a66:	f1a7 0120 	sub.w	r1, r7, #32
+#else
+	pInitCtx->pc = (u32_t)_thread_entry;
+#endif
+
+	/* force ARM mode by clearing LSB of address */
+	pInitCtx->pc &= 0xfffffffe;
+     a6a:	4a0b      	ldr	r2, [pc, #44]	; (a98 <_new_thread+0x48>)
+	pInitCtx = (struct __esf *)(STACK_ROUND_DOWN(stackEnd -
+     a6c:	4421      	add	r1, r4
+     a6e:	f021 0107 	bic.w	r1, r1, #7
+	pInitCtx->pc &= 0xfffffffe;
+     a72:	f022 0201 	bic.w	r2, r2, #1
+     a76:	652b      	str	r3, [r5, #80]	; 0x50
+	thread->fn_abort = NULL;
+     a78:	656b      	str	r3, [r5, #84]	; 0x54
+     a7a:	618a      	str	r2, [r1, #24]
+
+	pInitCtx->a1 = (u32_t)pEntry;
+	pInitCtx->a2 = (u32_t)parameter1;
+     a7c:	9a06      	ldr	r2, [sp, #24]
+	pInitCtx->a1 = (u32_t)pEntry;
+     a7e:	600e      	str	r6, [r1, #0]
+	pInitCtx->a2 = (u32_t)parameter1;
+     a80:	604a      	str	r2, [r1, #4]
+	pInitCtx->a3 = (u32_t)parameter2;
+     a82:	9a07      	ldr	r2, [sp, #28]
+     a84:	608a      	str	r2, [r1, #8]
+	pInitCtx->a4 = (u32_t)parameter3;
+     a86:	9a08      	ldr	r2, [sp, #32]
+     a88:	60ca      	str	r2, [r1, #12]
+	pInitCtx->xpsr =
+     a8a:	f04f 7280 	mov.w	r2, #16777216	; 0x1000000
+     a8e:	61ca      	str	r2, [r1, #28]
+		0x01000000UL; /* clear all, thumb bit is 1, even if RO */
+
+	thread->callee_saved.psp = (u32_t)pInitCtx;
+     a90:	64e9      	str	r1, [r5, #76]	; 0x4c
+	thread->arch.basepri = 0;
+     a92:	662b      	str	r3, [r5, #96]	; 0x60
+     a94:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+     a96:	bf00      	nop
+     a98:	000002c9 	.word	0x000002c9
+
+00000a9c <_CpuIdleInit>:
+ *
+ * void _CpuIdleInit (void);
+ */
+
+SECTION_FUNC(TEXT, _CpuIdleInit)
+	ldr r1, =_SCB_SCR
+     a9c:	4901      	ldr	r1, [pc, #4]	; (aa4 <_CpuIdleInit+0x8>)
+	movs.n r2, #_SCR_INIT_BITS
+     a9e:	2210      	movs	r2, #16
+	str r2, [r1]
+     aa0:	600a      	str	r2, [r1, #0]
+	bx lr
+     aa2:	4770      	bx	lr
+	ldr r1, =_SCB_SCR
+     aa4:	e000ed10 	.word	0xe000ed10
+
+00000aa8 <k_cpu_idle>:
+
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+	cpsie i
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+	/* clear BASEPRI so wfi is awakened by incoming interrupts */
+	eors.n r0, r0
+     aa8:	4040      	eors	r0, r0
+	msr BASEPRI, r0
+     aaa:	f380 8811 	msr	BASEPRI, r0
+#else
+#error Unknown ARM architecture
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+
+	wfi
+     aae:	bf30      	wfi
+
+	bx lr
+     ab0:	4770      	bx	lr
+     ab2:	bf00      	nop
+
+00000ab4 <__bus_fault>:
+	mrs r0, MSP
+_stack_frame_endif:
+
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+	/* force unlock interrupts */
+	eors.n r0, r0
+     ab4:	4040      	eors	r0, r0
+	msr BASEPRI, r0
+     ab6:	f380 8811 	msr	BASEPRI, r0
+
+#if !defined(CONFIG_ARM_SECURE_FIRMWARE)
+	/* this checks to see if we are in a nested exception */
+	ldr ip, =_SCS_ICSR
+     aba:	f8df c01c 	ldr.w	ip, [pc, #28]	; ad8 <__bus_fault+0x24>
+	ldr ip, [ip]
+     abe:	f8dc c000 	ldr.w	ip, [ip]
+	ands.w ip, #_SCS_ICSR_RETTOBASE
+     ac2:	f41c 6c00 	ands.w	ip, ip, #2048	; 0x800
+
+	ite eq			/* is the RETTOBASE bit zero ? */
+     ac6:	bf0c      	ite	eq
+		mrseq r0, MSP	/* if so, we're not returning to thread mode,
+     ac8:	f3ef 8008 	mrseq	r0, MSP
+				 * thus this is a nested exception: the stack
+				 * frame is on the MSP */
+		mrsne r0, PSP	/* if not, we are returning to thread mode, thus
+     acc:	f3ef 8009 	mrsne	r0, PSP
+	 * located in the LR. Therefore, we supply the LR value as an
+	 * argument to the fault handler.
+	 */
+	mov r1, lr
+#endif /* CONFIG_ARM_SECURE_FIRMWARE */
+	push {lr}
+     ad0:	b500      	push	{lr}
+	bl _Fault
+     ad2:	f7ff ff4d 	bl	970 <_Fault>
+
+	pop {pc}
+     ad6:	bd00      	pop	{pc}
+	ldr ip, =_SCS_ICSR
+     ad8:	e000ed04 	.word	0xe000ed04
+
+00000adc <_NanoFatalErrorHandler>:
+ * @return This function does not return.
+ */
+void _NanoFatalErrorHandler(unsigned int reason,
+					  const NANO_ESF *pEsf)
+{
+	switch (reason) {
+     adc:	2804      	cmp	r0, #4
+{
+     ade:	b538      	push	{r3, r4, r5, lr}
+     ae0:	4604      	mov	r4, r0
+     ae2:	460d      	mov	r5, r1
+	switch (reason) {
+     ae4:	d013      	beq.n	b0e <_NanoFatalErrorHandler+0x32>
+     ae6:	2805      	cmp	r0, #5
+     ae8:	d013      	beq.n	b12 <_NanoFatalErrorHandler+0x36>
+     aea:	2803      	cmp	r0, #3
+     aec:	d113      	bne.n	b16 <_NanoFatalErrorHandler+0x3a>
+		printk("***** Stack Check Fail! *****\n");
+		break;
+#endif /* CONFIG_STACK_CANARIES */
+
+	case _NANO_ERR_ALLOCATION_FAIL:
+		printk("**** Kernel Allocation Failure! ****\n");
+     aee:	480c      	ldr	r0, [pc, #48]	; (b20 <_NanoFatalErrorHandler+0x44>)
+		break;
+
+	case _NANO_ERR_KERNEL_OOPS:
+		printk("***** Kernel OOPS! *****\n");
+     af0:	f7ff fd90 	bl	614 <printk>
+     af4:	f000 faf4 	bl	10e0 <_impl_k_current_get>
+
+	default:
+		printk("**** Unknown Fatal Error %d! ****\n", reason);
+		break;
+	}
+	printk("Current thread ID = %p\n"
+     af8:	69aa      	ldr	r2, [r5, #24]
+     afa:	4601      	mov	r1, r0
+     afc:	4809      	ldr	r0, [pc, #36]	; (b24 <_NanoFatalErrorHandler+0x48>)
+     afe:	f7ff fd89 	bl	614 <printk>
+	 * to respond to the error.  The decisions as to what responses are
+	 * appropriate to the various errors are something the customer must
+	 * decide.
+	 */
+
+	_SysFatalErrorHandler(reason, pEsf);
+     b02:	4629      	mov	r1, r5
+     b04:	4620      	mov	r0, r4
+}
+     b06:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+	_SysFatalErrorHandler(reason, pEsf);
+     b0a:	f000 b817 	b.w	b3c <_SysFatalErrorHandler>
+		printk("***** Kernel OOPS! *****\n");
+     b0e:	4806      	ldr	r0, [pc, #24]	; (b28 <_NanoFatalErrorHandler+0x4c>)
+     b10:	e7ee      	b.n	af0 <_NanoFatalErrorHandler+0x14>
+		printk("***** Kernel Panic! *****\n");
+     b12:	4806      	ldr	r0, [pc, #24]	; (b2c <_NanoFatalErrorHandler+0x50>)
+     b14:	e7ec      	b.n	af0 <_NanoFatalErrorHandler+0x14>
+		printk("**** Unknown Fatal Error %d! ****\n", reason);
+     b16:	4601      	mov	r1, r0
+     b18:	4805      	ldr	r0, [pc, #20]	; (b30 <_NanoFatalErrorHandler+0x54>)
+     b1a:	f7ff fd7b 	bl	614 <printk>
+		break;
+     b1e:	e7e9      	b.n	af4 <_NanoFatalErrorHandler+0x18>
+     b20:	0000183c 	.word	0x0000183c
+     b24:	000018ba 	.word	0x000018ba
+     b28:	00001862 	.word	0x00001862
+     b2c:	0000187c 	.word	0x0000187c
+     b30:	00001897 	.word	0x00001897
+
+00000b34 <_do_kernel_oops>:
+
+void _do_kernel_oops(const NANO_ESF *esf)
+{
+     b34:	4601      	mov	r1, r0
+	_NanoFatalErrorHandler(esf->r0, esf);
+     b36:	6800      	ldr	r0, [r0, #0]
+     b38:	f7ff bfd0 	b.w	adc <_NanoFatalErrorHandler>
+
+00000b3c <_SysFatalErrorHandler>:
+#ifdef CONFIG_STACK_SENTINEL
+	if (reason == _NANO_ERR_STACK_CHK_FAIL) {
+		goto hang_system;
+	}
+#endif
+	if (reason == _NANO_ERR_KERNEL_PANIC) {
+     b3c:	2805      	cmp	r0, #5
+{
+     b3e:	b510      	push	{r4, lr}
+	if (reason == _NANO_ERR_KERNEL_PANIC) {
+     b40:	d00c      	beq.n	b5c <_SysFatalErrorHandler+0x20>
+		goto hang_system;
+	}
+	if (k_is_in_isr() || _is_thread_essential()) {
+     b42:	f000 fc0b 	bl	135c <k_is_in_isr>
+     b46:	b160      	cbz	r0, b62 <_SysFatalErrorHandler+0x26>
+		printk("Fatal fault in %s! Spinning...\n",
+		       k_is_in_isr() ? "ISR" : "essential thread");
+     b48:	f000 fc08 	bl	135c <k_is_in_isr>
+		printk("Fatal fault in %s! Spinning...\n",
+     b4c:	4b0c      	ldr	r3, [pc, #48]	; (b80 <_SysFatalErrorHandler+0x44>)
+     b4e:	490d      	ldr	r1, [pc, #52]	; (b84 <_SysFatalErrorHandler+0x48>)
+     b50:	2800      	cmp	r0, #0
+     b52:	bf08      	it	eq
+     b54:	4619      	moveq	r1, r3
+     b56:	480c      	ldr	r0, [pc, #48]	; (b88 <_SysFatalErrorHandler+0x4c>)
+     b58:	f7ff fd5c 	bl	614 <printk>
+#else
+	ARG_UNUSED(reason);
+#endif
+
+	for (;;) {
+		k_cpu_idle();
+     b5c:	f7ff ffa4 	bl	aa8 <k_cpu_idle>
+     b60:	e7fc      	b.n	b5c <_SysFatalErrorHandler+0x20>
+	if (k_is_in_isr() || _is_thread_essential()) {
+     b62:	f000 fc03 	bl	136c <_is_thread_essential>
+     b66:	2800      	cmp	r0, #0
+     b68:	d1ee      	bne.n	b48 <_SysFatalErrorHandler+0xc>
+	printk("Fatal fault in thread %p! Aborting.\n", _current);
+     b6a:	4c08      	ldr	r4, [pc, #32]	; (b8c <_SysFatalErrorHandler+0x50>)
+     b6c:	4808      	ldr	r0, [pc, #32]	; (b90 <_SysFatalErrorHandler+0x54>)
+     b6e:	68a1      	ldr	r1, [r4, #8]
+     b70:	f7ff fd50 	bl	614 <printk>
+K_SYSCALL_DECLARE1_VOID(K_SYSCALL_K_THREAD_ABORT, k_thread_abort, k_tid_t, thread);
+     b74:	68a0      	ldr	r0, [r4, #8]
+	}
+	CODE_UNREACHABLE;
+}
+     b76:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+     b7a:	f000 b80b 	b.w	b94 <_impl_k_thread_abort>
+     b7e:	bf00      	nop
+     b80:	000018fa 	.word	0x000018fa
+     b84:	000018f6 	.word	0x000018f6
+     b88:	0000190b 	.word	0x0000190b
+     b8c:	200000e0 	.word	0x200000e0
+     b90:	0000192b 	.word	0x0000192b
+
+00000b94 <_impl_k_thread_abort>:
+#include <misc/__assert.h>
+
+extern void _k_thread_single_abort(struct k_thread *thread);
+
+void _impl_k_thread_abort(k_tid_t thread)
+{
+     b94:	b538      	push	{r3, r4, r5, lr}
+     b96:	4605      	mov	r5, r0
+	__asm__ volatile(
+     b98:	f04f 0320 	mov.w	r3, #32
+     b9c:	f3ef 8411 	mrs	r4, BASEPRI
+     ba0:	f383 8811 	msr	BASEPRI, r3
+	key = irq_lock();
+
+	__ASSERT(!(thread->base.user_options & K_ESSENTIAL),
+		 "essential thread aborted");
+
+	_k_thread_single_abort(thread);
+     ba4:	f000 fc1c 	bl	13e0 <_k_thread_single_abort>
+	_thread_monitor_exit(thread);
+
+	if (_current == thread) {
+     ba8:	4b0b      	ldr	r3, [pc, #44]	; (bd8 <_impl_k_thread_abort+0x44>)
+     baa:	689b      	ldr	r3, [r3, #8]
+     bac:	429d      	cmp	r5, r3
+     bae:	d10d      	bne.n	bcc <_impl_k_thread_abort+0x38>
+		if ((SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk) == 0) {
+     bb0:	4b0a      	ldr	r3, [pc, #40]	; (bdc <_impl_k_thread_abort+0x48>)
+     bb2:	685a      	ldr	r2, [r3, #4]
+     bb4:	f3c2 0208 	ubfx	r2, r2, #0, #9
+     bb8:	b922      	cbnz	r2, bc4 <_impl_k_thread_abort+0x30>
+extern unsigned int __swap(unsigned int key);
+
+static inline unsigned int _Swap(unsigned int key)
+{
+	_check_stack_sentinel();
+	_update_time_slice_before_swap();
+     bba:	f000 fa83 	bl	10c4 <_update_time_slice_before_swap>
+
+	return __swap(key);
+     bbe:	4620      	mov	r0, r4
+     bc0:	f7ff fdaa 	bl	718 <__swap>
+			_Swap(key);
+			CODE_UNREACHABLE;
+		} else {
+			SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+     bc4:	685a      	ldr	r2, [r3, #4]
+     bc6:	f042 5280 	orr.w	r2, r2, #268435456	; 0x10000000
+     bca:	605a      	str	r2, [r3, #4]
+		}
+	}
+
+	/* The abort handler might have altered the ready queue. */
+	_reschedule(key);
+     bcc:	4620      	mov	r0, r4
+}
+     bce:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+	_reschedule(key);
+     bd2:	f000 b9c9 	b.w	f68 <_reschedule>
+     bd6:	bf00      	nop
+     bd8:	200000e0 	.word	0x200000e0
+     bdc:	e000ed00 	.word	0xe000ed00
+
+00000be0 <_isr_wrapper>:
+ *
+ * @return N/A
+ */
+SECTION_FUNC(TEXT, _isr_wrapper)
+
+	push {lr}		/* lr is now the first item on the stack */
+     be0:	b500      	push	{lr}
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+
+	cpsie i		/* re-enable interrupts (PRIMASK = 0) */
+#endif
+
+	mrs r0, IPSR	/* get exception number */
+     be2:	f3ef 8005 	mrs	r0, IPSR
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+	ldr r1, =16
+	subs r0, r1	/* get IRQ number */
+	lsls r0, #3	/* table is 8-byte wide */
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+	sub r0, r0, #16	/* get IRQ number */
+     be6:	f1a0 0010 	sub.w	r0, r0, #16
+	lsl r0, r0, #3	/* table is 8-byte wide */
+     bea:	ea4f 00c0 	mov.w	r0, r0, lsl #3
+#else
+#error Unknown ARM architecture
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+	ldr r1, =_sw_isr_table
+     bee:	4904      	ldr	r1, [pc, #16]	; (c00 <_isr_wrapper+0x20>)
+	add r1, r1, r0	/* table entry: ISRs must have their MSB set to stay
+     bf0:	4401      	add	r1, r0
+			 * in thumb mode */
+
+	ldm r1!,{r0,r3}	/* arg in r0, ISR in r3 */
+     bf2:	c909      	ldmia	r1!, {r0, r3}
+#else
+	pop {lr}
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+	ldm sp!,{r0-r3} /* Restore r0 to r4 regs */
+#endif
+	blx r3		/* call ISR */
+     bf4:	4798      	blx	r3
+
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+	pop {r3}
+	mov lr, r3
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+	pop {lr}
+     bf6:	f85d eb04 	ldr.w	lr, [sp], #4
+#else
+#error Unknown ARM architecture
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+
+	/* exception return is done in _IntExit() */
+	b _IntExit
+     bfa:	f7ff bd6d 	b.w	6d8 <_ExcExit>
+     bfe:	0000      	.short	0x0000
+	ldr r1, =_sw_isr_table
+     c00:	000000c8 	.word	0x000000c8
+
+00000c04 <__reset>:
+
+    /* lock interrupts: will get unlocked when switch to main task */
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+    cpsid i
+#elif defined(CONFIG_ARMV7_M_ARMV8_M_MAINLINE)
+    movs.n r0, #_EXC_IRQ_DEFAULT_PRIO
+     c04:	2020      	movs	r0, #32
+    msr BASEPRI, r0
+     c06:	f380 8811 	msr	BASEPRI, r0
+
+    /*
+     * Set PSP and use it to boot without using MSP, so that it
+     * gets set to _interrupt_stack during initialisation.
+     */
+    ldr r0, =_interrupt_stack
+     c0a:	4806      	ldr	r0, [pc, #24]	; (c24 <__reset+0x20>)
+    ldr r1, =CONFIG_ISR_STACK_SIZE
+     c0c:	f44f 6100 	mov.w	r1, #2048	; 0x800
+    adds r0, r0, r1
+     c10:	1840      	adds	r0, r0, r1
+    msr PSP, r0
+     c12:	f380 8809 	msr	PSP, r0
+    movs.n r0, #2	/* switch to using PSP (bit1 of CONTROL reg) */
+     c16:	2002      	movs	r0, #2
+    msr CONTROL, r0
+     c18:	f380 8814 	msr	CONTROL, r0
+    /*
+     * When changing the stack pointer, software must use an ISB instruction
+     * immediately after the MSR instruction. This ensures that instructions
+     * after the ISB instruction execute using the new stack pointer.
+    */
+    isb
+     c1c:	f3bf 8f6f 	isb	sy
+
+    b _PrepC
+     c20:	f000 b806 	b.w	c30 <_PrepC>
+    ldr r0, =_interrupt_stack
+     c24:	20000618 	.word	0x20000618
+
+00000c28 <_SysNmiOnReset>:
+_ASM_FILE_PROLOGUE
+
+GTEXT(_SysNmiOnReset)
+
+SECTION_FUNC(TEXT, _SysNmiOnReset)
+    wfi
+     c28:	bf30      	wfi
+    b _SysNmiOnReset
+     c2a:	f7ff bffd 	b.w	c28 <_SysNmiOnReset>
+     c2e:	bf00      	nop
+
+00000c30 <_PrepC>:
+
+#ifdef CONFIG_BOOT_TIME_MEASUREMENT
+	extern u64_t __start_time_stamp;
+#endif
+void _PrepC(void)
+{
+     c30:	b508      	push	{r3, lr}
+	SCB->VTOR = VECTOR_ADDRESS & SCB_VTOR_TBLOFF_Msk;
+     c32:	4b08      	ldr	r3, [pc, #32]	; (c54 <_PrepC+0x24>)
+     c34:	4a08      	ldr	r2, [pc, #32]	; (c58 <_PrepC+0x28>)
+     c36:	f023 4360 	bic.w	r3, r3, #3758096384	; 0xe0000000
+     c3a:	f023 037f 	bic.w	r3, r3, #127	; 0x7f
+     c3e:	6093      	str	r3, [r2, #8]
+  \details Acts as a special kind of Data Memory Barrier.
+           It completes when all explicit memory accesses before this instruction complete.
+ */
+__STATIC_FORCEINLINE void __DSB(void)
+{
+  __ASM volatile ("dsb 0xF":::"memory");
+     c40:	f3bf 8f4f 	dsb	sy
+  __ASM volatile ("isb 0xF":::"memory");
+     c44:	f3bf 8f6f 	isb	sy
+	relocate_vector_table();
+	enable_floating_point();
+	_bss_zero();
+     c48:	f000 f888 	bl	d5c <_bss_zero>
+	_data_copy();
+     c4c:	f000 f890 	bl	d70 <_data_copy>
+#ifdef CONFIG_BOOT_TIME_MEASUREMENT
+	__start_time_stamp = 0;
+#endif
+	_Cstart();
+     c50:	f000 f8b2 	bl	db8 <_Cstart>
+     c54:	00000000 	.word	0x00000000
+     c58:	e000ed00 	.word	0xe000ed00
+
+00000c5c <__nmi>:
+ *
+ * @return N/A
+ */
+
+void __nmi(void)
+{
+     c5c:	b508      	push	{r3, lr}
+	handler();
+     c5e:	f7ff ffe3 	bl	c28 <_SysNmiOnReset>
+	_ExcExit();
+}
+     c62:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+	_ExcExit();
+     c66:	f7ff bd37 	b.w	6d8 <_ExcExit>
+
+00000c6a <uart_stellaris_poll_in>:
+ * @return 0 if a character arrived, -1 if the input buffer if empty.
+ */
+
+static int uart_stellaris_poll_in(struct device *dev, unsigned char *c)
+{
+	volatile struct _uart *uart = UART_STRUCT(dev);
+     c6a:	6803      	ldr	r3, [r0, #0]
+     c6c:	689b      	ldr	r3, [r3, #8]
+     c6e:	681b      	ldr	r3, [r3, #0]
+
+	if (uart->fr & UARTFR_RXFE)
+     c70:	6998      	ldr	r0, [r3, #24]
+     c72:	f010 0010 	ands.w	r0, r0, #16
+		return (-1);
+
+	/* got a character */
+	*c = (unsigned char)uart->dr;
+     c76:	bf0a      	itet	eq
+     c78:	681b      	ldreq	r3, [r3, #0]
+		return (-1);
+     c7a:	f04f 30ff 	movne.w	r0, #4294967295	; 0xffffffff
+	*c = (unsigned char)uart->dr;
+     c7e:	700b      	strbeq	r3, [r1, #0]
+
+	return 0;
+}
+     c80:	4770      	bx	lr
+
+00000c82 <uart_stellaris_init>:
+{
+     c82:	4601      	mov	r1, r0
+     c84:	b530      	push	{r4, r5, lr}
+	volatile struct _uart *uart = UART_STRUCT(dev);
+     c86:	6803      	ldr	r3, [r0, #0]
+     c88:	689c      	ldr	r4, [r3, #8]
+     c8a:	6822      	ldr	r2, [r4, #0]
+	uart->ctl &= ~UARTCTL_UARTEN;
+     c8c:	6b13      	ldr	r3, [r2, #48]	; 0x30
+     c8e:	f023 0301 	bic.w	r3, r3, #1
+     c92:	6313      	str	r3, [r2, #48]	; 0x30
+	while (uart->fr & UARTFR_BUSY)
+     c94:	6990      	ldr	r0, [r2, #24]
+     c96:	f010 0008 	ands.w	r0, r0, #8
+     c9a:	d1fb      	bne.n	c94 <uart_stellaris_init+0x12>
+	uart->lcrh &= ~UARTLCRH_FEN;
+     c9c:	6ad3      	ldr	r3, [r2, #44]	; 0x2c
+	baudrate_set(dev, DEV_DATA(dev)->baud_rate,
+     c9e:	6864      	ldr	r4, [r4, #4]
+	uart->lcrh &= ~UARTLCRH_FEN;
+     ca0:	f023 0310 	bic.w	r3, r3, #16
+     ca4:	62d3      	str	r3, [r2, #44]	; 0x2c
+	baudrate_set(dev, DEV_DATA(dev)->baud_rate,
+     ca6:	688b      	ldr	r3, [r1, #8]
+	div = (16 * baudrate);
+     ca8:	6819      	ldr	r1, [r3, #0]
+     caa:	0109      	lsls	r1, r1, #4
+	brdi = sys_clk_freq_hz / div;
+     cac:	fbb4 f3f1 	udiv	r3, r4, r1
+     cb0:	b29d      	uxth	r5, r3
+	rem = sys_clk_freq_hz % div;
+     cb2:	fb01 4313 	mls	r3, r1, r3, r4
+	brdf = ((((rem * 64) << 1) / div) + 1) >> 1;
+     cb6:	01db      	lsls	r3, r3, #7
+     cb8:	fbb3 f3f1 	udiv	r3, r3, r1
+     cbc:	3301      	adds	r3, #1
+	uart->fbrd = (u8_t)(brdf & 0x3f);    /* 6 bits */
+     cbe:	f3c3 0345 	ubfx	r3, r3, #1, #6
+	uart->ibrd = (u16_t)(brdi & 0xffff); /* 16 bits */
+     cc2:	6255      	str	r5, [r2, #36]	; 0x24
+	uart->fbrd = (u8_t)(brdf & 0x3f);    /* 6 bits */
+     cc4:	6293      	str	r3, [r2, #40]	; 0x28
+	uart->lcrh = LINE_CONTROL_DEFAULTS;
+     cc6:	2360      	movs	r3, #96	; 0x60
+     cc8:	62d3      	str	r3, [r2, #44]	; 0x2c
+	uart->ctl |= UARTCTL_UARTEN;
+     cca:	6b13      	ldr	r3, [r2, #48]	; 0x30
+     ccc:	f043 0301 	orr.w	r3, r3, #1
+     cd0:	6313      	str	r3, [r2, #48]	; 0x30
+}
+     cd2:	bd30      	pop	{r4, r5, pc}
+
+00000cd4 <uart_stellaris_poll_out>:
+ * @return Sent character
+ */
+static unsigned char uart_stellaris_poll_out(struct device *dev,
+					     unsigned char c)
+{
+	volatile struct _uart *uart = UART_STRUCT(dev);
+     cd4:	6803      	ldr	r3, [r0, #0]
+     cd6:	689b      	ldr	r3, [r3, #8]
+     cd8:	681b      	ldr	r3, [r3, #0]
+	return (uart->fr & UARTFR_TXFE);
+     cda:	699a      	ldr	r2, [r3, #24]
+
+	while (!poll_tx_ready(dev))
+     cdc:	0612      	lsls	r2, r2, #24
+     cde:	d5fc      	bpl.n	cda <uart_stellaris_poll_out+0x6>
+		;
+
+	/* send a character */
+	uart->dr = (u32_t)c;
+     ce0:	6019      	str	r1, [r3, #0]
+	return c;
+}
+     ce2:	4608      	mov	r0, r1
+     ce4:	4770      	bx	lr
+	...
+
+00000ce8 <_sys_device_do_config_level>:
+ * off and the next one begins.
+ *
+ * @param level init level to run.
+ */
+void _sys_device_do_config_level(int level)
+{
+     ce8:	b538      	push	{r3, r4, r5, lr}
+	struct device *info;
+
+	for (info = config_levels[level]; info < config_levels[level+1];
+     cea:	4b08      	ldr	r3, [pc, #32]	; (d0c <_sys_device_do_config_level+0x24>)
+     cec:	f853 4020 	ldr.w	r4, [r3, r0, lsl #2]
+     cf0:	3001      	adds	r0, #1
+     cf2:	f853 5020 	ldr.w	r5, [r3, r0, lsl #2]
+     cf6:	4620      	mov	r0, r4
+     cf8:	42a8      	cmp	r0, r5
+     cfa:	f104 040c 	add.w	r4, r4, #12
+     cfe:	d300      	bcc.n	d02 <_sys_device_do_config_level+0x1a>
+		struct device_config *device = info->config;
+
+		device->init(info);
+		_k_object_init(info);
+	}
+}
+     d00:	bd38      	pop	{r3, r4, r5, pc}
+		device->init(info);
+     d02:	f854 3c0c 	ldr.w	r3, [r4, #-12]
+     d06:	685b      	ldr	r3, [r3, #4]
+     d08:	4798      	blx	r3
+     d0a:	e7f4      	b.n	cf6 <_sys_device_do_config_level+0xe>
+     d0c:	0000197c 	.word	0x0000197c
+
+00000d10 <device_get_binding>:
+	/* Split the search into two loops: in the common scenario, where
+	 * device names are stored in ROM (and are referenced by the user
+	 * with CONFIG_* macros), only cheap pointer comparisons will be
+	 * performed.  Reserve string comparisons for a fallback.
+	 */
+	for (info = __device_init_start; info != __device_init_end; info++) {
+     d10:	4b10      	ldr	r3, [pc, #64]	; (d54 <device_get_binding+0x44>)
+{
+     d12:	b570      	push	{r4, r5, r6, lr}
+     d14:	4605      	mov	r5, r0
+     d16:	461e      	mov	r6, r3
+	for (info = __device_init_start; info != __device_init_end; info++) {
+     d18:	4c0f      	ldr	r4, [pc, #60]	; (d58 <device_get_binding+0x48>)
+     d1a:	429c      	cmp	r4, r3
+     d1c:	d104      	bne.n	d28 <device_get_binding+0x18>
+     d1e:	4c0e      	ldr	r4, [pc, #56]	; (d58 <device_get_binding+0x48>)
+		if (info->driver_api != NULL && info->config->name == name) {
+			return info;
+		}
+	}
+
+	for (info = __device_init_start; info != __device_init_end; info++) {
+     d20:	42b4      	cmp	r4, r6
+     d22:	d109      	bne.n	d38 <device_get_binding+0x28>
+		if (!strcmp(name, info->config->name)) {
+			return info;
+		}
+	}
+
+	return NULL;
+     d24:	2400      	movs	r4, #0
+     d26:	e012      	b.n	d4e <device_get_binding+0x3e>
+		if (info->driver_api != NULL && info->config->name == name) {
+     d28:	6862      	ldr	r2, [r4, #4]
+     d2a:	b11a      	cbz	r2, d34 <device_get_binding+0x24>
+     d2c:	6822      	ldr	r2, [r4, #0]
+     d2e:	6812      	ldr	r2, [r2, #0]
+     d30:	42aa      	cmp	r2, r5
+     d32:	d00c      	beq.n	d4e <device_get_binding+0x3e>
+	for (info = __device_init_start; info != __device_init_end; info++) {
+     d34:	340c      	adds	r4, #12
+     d36:	e7f0      	b.n	d1a <device_get_binding+0xa>
+		if (!info->driver_api) {
+     d38:	6863      	ldr	r3, [r4, #4]
+     d3a:	b90b      	cbnz	r3, d40 <device_get_binding+0x30>
+	for (info = __device_init_start; info != __device_init_end; info++) {
+     d3c:	340c      	adds	r4, #12
+     d3e:	e7ef      	b.n	d20 <device_get_binding+0x10>
+		if (!strcmp(name, info->config->name)) {
+     d40:	6823      	ldr	r3, [r4, #0]
+     d42:	4628      	mov	r0, r5
+     d44:	6819      	ldr	r1, [r3, #0]
+     d46:	f7ff fa47 	bl	1d8 <strcmp>
+     d4a:	2800      	cmp	r0, #0
+     d4c:	d1f6      	bne.n	d3c <device_get_binding+0x2c>
+}
+     d4e:	4620      	mov	r0, r4
+     d50:	bd70      	pop	{r4, r5, r6, pc}
+     d52:	bf00      	nop
+     d54:	20000e8c 	.word	0x20000e8c
+     d58:	20000e38 	.word	0x20000e38
+
+00000d5c <_bss_zero>:
+ *
+ * @return N/A
+ */
+void _bss_zero(void)
+{
+	memset(&__bss_start, 0,
+     d5c:	4802      	ldr	r0, [pc, #8]	; (d68 <_bss_zero+0xc>)
+     d5e:	4a03      	ldr	r2, [pc, #12]	; (d6c <_bss_zero+0x10>)
+     d60:	2100      	movs	r1, #0
+     d62:	1a12      	subs	r2, r2, r0
+     d64:	f7ff ba71 	b.w	24a <memset>
+     d68:	20000000 	.word	0x20000000
+     d6c:	20000118 	.word	0x20000118
+
+00000d70 <_data_copy>:
+ *
+ * @return N/A
+ */
+void _data_copy(void)
+{
+	memcpy(&__data_ram_start, &__data_rom_start,
+     d70:	4802      	ldr	r0, [pc, #8]	; (d7c <_data_copy+0xc>)
+     d72:	4a03      	ldr	r2, [pc, #12]	; (d80 <_data_copy+0x10>)
+     d74:	4903      	ldr	r1, [pc, #12]	; (d84 <_data_copy+0x14>)
+     d76:	1a12      	subs	r2, r2, r0
+     d78:	f7ff ba3b 	b.w	1f2 <memcpy>
+     d7c:	20000e18 	.word	0x20000e18
+     d80:	20000e8c 	.word	0x20000e8c
+     d84:	000019c4 	.word	0x000019c4
+
+00000d88 <bg_thread_main>:
+ * init functions, then invokes application's main() routine.
+ *
+ * @return N/A
+ */
+static void bg_thread_main(void *unused1, void *unused2, void *unused3)
+{
+     d88:	b508      	push	{r3, lr}
+	ARG_UNUSED(unused1);
+	ARG_UNUSED(unused2);
+	ARG_UNUSED(unused3);
+
+	_sys_device_do_config_level(_SYS_INIT_LEVEL_POST_KERNEL);
+     d8a:	2002      	movs	r0, #2
+     d8c:	f7ff ffac 	bl	ce8 <_sys_device_do_config_level>
+	if (boot_delay > 0) {
+		printk("***** delaying boot " STRINGIFY(CONFIG_BOOT_DELAY)
+		       "ms (per build configuration) *****\n");
+		k_busy_wait(CONFIG_BOOT_DELAY * USEC_PER_MSEC);
+	}
+	PRINT_BOOT_BANNER();
+     d90:	4807      	ldr	r0, [pc, #28]	; (db0 <bg_thread_main+0x28>)
+     d92:	f7ff fc3f 	bl	614 <printk>
+
+	/* Final init level before app starts */
+	_sys_device_do_config_level(_SYS_INIT_LEVEL_APPLICATION);
+     d96:	2003      	movs	r0, #3
+     d98:	f7ff ffa6 	bl	ce8 <_sys_device_do_config_level>
+	extern void __do_init_array_aux(void);
+	__do_global_ctors_aux();
+	__do_init_array_aux();
+#endif
+
+	_init_static_threads();
+     d9c:	f000 fb40 	bl	1420 <_init_static_threads>
+	__main_time_stamp = (u64_t)k_cycle_get_32();
+#endif
+
+	extern void main(void);
+
+	main();
+     da0:	f7ff fa76 	bl	290 <main>
+
+	/* Terminate thread normally since it has no more work to do */
+	_main_thread->base.user_options &= ~K_ESSENTIAL;
+     da4:	4a03      	ldr	r2, [pc, #12]	; (db4 <bg_thread_main+0x2c>)
+     da6:	7a13      	ldrb	r3, [r2, #8]
+     da8:	f023 0301 	bic.w	r3, r3, #1
+     dac:	7213      	strb	r3, [r2, #8]
+     dae:	bd08      	pop	{r3, pc}
+     db0:	00001998 	.word	0x00001998
+     db4:	20000070 	.word	0x20000070
+
+00000db8 <_Cstart>:
+ * cleared/zeroed.
+ *
+ * @return Does not return
+ */
+FUNC_NORETURN void _Cstart(void)
+{
+     db8:	b580      	push	{r7, lr}
+     dba:	b086      	sub	sp, #24
+     dbc:	af06      	add	r7, sp, #24
+	 * spurious interrupts. This must be performed before other kernel
+	 * subsystems install bonafide handlers, or before hardware device
+	 * drivers are initialized.
+	 */
+
+	_IntLibInit();
+     dbe:	f7ff fc9f 	bl	700 <_IntLibInit>
+{
+#ifdef CONFIG_MPU_REQUIRES_POWER_OF_TWO_ALIGNMENT
+	u32_t msp = (u32_t)(K_THREAD_STACK_BUFFER(_interrupt_stack) +
+			    CONFIG_ISR_STACK_SIZE - MPU_GUARD_ALIGN_AND_SIZE);
+#else
+	u32_t msp = (u32_t)(K_THREAD_STACK_BUFFER(_interrupt_stack) +
+     dc2:	4b30      	ldr	r3, [pc, #192]	; (e84 <_Cstart+0xcc>)
+  __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
+     dc4:	f383 8808 	msr	MSP, r3
+    SCB->SHP[(((uint32_t)IRQn) & 0xFUL)-4UL] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+     dc8:	2400      	movs	r4, #0
+     dca:	22e0      	movs	r2, #224	; 0xe0
+     dcc:	4b2e      	ldr	r3, [pc, #184]	; (e88 <_Cstart+0xd0>)
+	_ready_q.cache = _main_thread;
+     dce:	4d2f      	ldr	r5, [pc, #188]	; (e8c <_Cstart+0xd4>)
+     dd0:	f883 2022 	strb.w	r2, [r3, #34]	; 0x22
+     dd4:	77dc      	strb	r4, [r3, #31]
+     dd6:	761c      	strb	r4, [r3, #24]
+     dd8:	765c      	strb	r4, [r3, #25]
+     dda:	769c      	strb	r4, [r3, #26]
+#if defined(CONFIG_ARM_SECURE_FIRMWARE)
+	NVIC_SetPriority(SecureFault_IRQn, _EXC_FAULT_PRIO);
+#endif /* CONFIG_ARM_SECURE_FIRMWARE */
+
+	/* Enable Usage, Mem, & Bus Faults */
+	SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_MEMFAULTENA_Msk |
+     ddc:	6a5a      	ldr	r2, [r3, #36]	; 0x24
+     dde:	4e2c      	ldr	r6, [pc, #176]	; (e90 <_Cstart+0xd8>)
+     de0:	f442 22e0 	orr.w	r2, r2, #458752	; 0x70000
+     de4:	625a      	str	r2, [r3, #36]	; 0x24
+extern void _CpuIdleInit(void);
+static ALWAYS_INLINE void kernel_arch_init(void)
+{
+	_InterruptStackSetup();
+	_ExcSetup();
+	_FaultInit();
+     de6:	f7ff fe29 	bl	a3c <_FaultInit>
+	_CpuIdleInit();
+     dea:	f7ff fe57 	bl	a9c <_CpuIdleInit>
+
+	/* perform any architecture-specific initialization */
+	kernel_arch_init();
+
+	/* perform basic hardware initialization */
+	_sys_device_do_config_level(_SYS_INIT_LEVEL_PRE_KERNEL_1);
+     dee:	4620      	mov	r0, r4
+     df0:	f7ff ff7a 	bl	ce8 <_sys_device_do_config_level>
+	_sys_device_do_config_level(_SYS_INIT_LEVEL_PRE_KERNEL_2);
+     df4:	2001      	movs	r0, #1
+     df6:	f7ff ff77 	bl	ce8 <_sys_device_do_config_level>
+	_sched_init();
+     dfa:	f000 f969 	bl	10d0 <_sched_init>
+	_setup_new_thread(_main_thread, _main_stack,
+     dfe:	2301      	movs	r3, #1
+	_ready_q.cache = _main_thread;
+     e00:	61f5      	str	r5, [r6, #28]
+	_setup_new_thread(_main_thread, _main_stack,
+     e02:	f44f 6280 	mov.w	r2, #1024	; 0x400
+     e06:	9304      	str	r3, [sp, #16]
+     e08:	9403      	str	r4, [sp, #12]
+     e0a:	9402      	str	r4, [sp, #8]
+     e0c:	9401      	str	r4, [sp, #4]
+     e0e:	9400      	str	r4, [sp, #0]
+     e10:	4b20      	ldr	r3, [pc, #128]	; (e94 <_Cstart+0xdc>)
+     e12:	4921      	ldr	r1, [pc, #132]	; (e98 <_Cstart+0xe0>)
+     e14:	4628      	mov	r0, r5
+     e16:	f000 fac9 	bl	13ac <_setup_new_thread>
+	thread->base.thread_state &= ~_THREAD_SUSPENDED;
+}
+
+static inline void _mark_thread_as_started(struct k_thread *thread)
+{
+	thread->base.thread_state &= ~_THREAD_PRESTART;
+     e1a:	7a6b      	ldrb	r3, [r5, #9]
+     e1c:	4634      	mov	r4, r6
+     e1e:	f023 0204 	bic.w	r2, r3, #4
+	return !(_is_thread_prevented_from_running(thread) ||
+     e22:	f013 0f1b 	tst.w	r3, #27
+	thread->base.thread_state &= ~_THREAD_PRESTART;
+     e26:	726a      	strb	r2, [r5, #9]
+	return !(_is_thread_prevented_from_running(thread) ||
+     e28:	d102      	bne.n	e30 <_Cstart+0x78>
+     e2a:	6a6b      	ldr	r3, [r5, #36]	; 0x24
+     e2c:	3301      	adds	r3, #1
+     e2e:	d024      	beq.n	e7a <_Cstart+0xc2>
+	_setup_new_thread(thr, stack,
+     e30:	2301      	movs	r3, #1
+     e32:	9304      	str	r3, [sp, #16]
+     e34:	230f      	movs	r3, #15
+     e36:	9303      	str	r3, [sp, #12]
+     e38:	2300      	movs	r3, #0
+     e3a:	4e18      	ldr	r6, [pc, #96]	; (e9c <_Cstart+0xe4>)
+     e3c:	9302      	str	r3, [sp, #8]
+     e3e:	9301      	str	r3, [sp, #4]
+     e40:	9300      	str	r3, [sp, #0]
+     e42:	f44f 7280 	mov.w	r2, #256	; 0x100
+     e46:	4b16      	ldr	r3, [pc, #88]	; (ea0 <_Cstart+0xe8>)
+     e48:	4916      	ldr	r1, [pc, #88]	; (ea4 <_Cstart+0xec>)
+     e4a:	4630      	mov	r0, r6
+     e4c:	f000 faae 	bl	13ac <_setup_new_thread>
+	thread->base.thread_state &= ~_THREAD_PRESTART;
+     e50:	7a73      	ldrb	r3, [r6, #9]
+	_kernel.cpus[0].idle_thread = _idle_thread;
+     e52:	60e6      	str	r6, [r4, #12]
+     e54:	f023 0304 	bic.w	r3, r3, #4
+     e58:	7273      	strb	r3, [r6, #9]
+ * @return N/A
+ */
+
+static inline void sys_dlist_init(sys_dlist_t *list)
+{
+	list->head = (sys_dnode_t *)list;
+     e5a:	4b13      	ldr	r3, [pc, #76]	; (ea8 <_Cstart+0xf0>)
+	start_of_main_stack =
+		K_THREAD_STACK_BUFFER(main_stack) + main_stack_size;
+#endif
+	start_of_main_stack = (void *)STACK_ROUND_DOWN(start_of_main_stack);
+
+	_current = main_thread;
+     e5c:	60a5      	str	r5, [r4, #8]
+     e5e:	6163      	str	r3, [r4, #20]
+	list->tail = (sys_dnode_t *)list;
+     e60:	61a3      	str	r3, [r4, #24]
+	start_of_main_stack = (void *)STACK_ROUND_DOWN(start_of_main_stack);
+     e62:	4b12      	ldr	r3, [pc, #72]	; (eac <_Cstart+0xf4>)
+#else
+#error "Built-in PSP limit checks not supported by HW"
+#endif
+#endif /* CONFIG_BUILTIN_STACK_GUARD */
+
+	__asm__ __volatile__(
+     e64:	4c12      	ldr	r4, [pc, #72]	; (eb0 <_Cstart+0xf8>)
+	start_of_main_stack = (void *)STACK_ROUND_DOWN(start_of_main_stack);
+     e66:	f023 0307 	bic.w	r3, r3, #7
+	__asm__ __volatile__(
+     e6a:	4a0a      	ldr	r2, [pc, #40]	; (e94 <_Cstart+0xdc>)
+     e6c:	f383 8809 	msr	PSP, r3
+     e70:	2100      	movs	r1, #0
+     e72:	f381 8811 	msr	BASEPRI, r1
+     e76:	4610      	mov	r0, r2
+     e78:	4720      	bx	r4
+}
+
+static inline void _ready_thread(struct k_thread *thread)
+{
+	if (_is_thread_ready(thread)) {
+		_add_thread_to_ready_q(thread);
+     e7a:	4628      	mov	r0, r5
+     e7c:	f000 f8c6 	bl	100c <_add_thread_to_ready_q>
+     e80:	e7d6      	b.n	e30 <_Cstart+0x78>
+     e82:	bf00      	nop
+     e84:	20000e18 	.word	0x20000e18
+     e88:	e000ed00 	.word	0xe000ed00
+     e8c:	20000070 	.word	0x20000070
+     e90:	200000e0 	.word	0x200000e0
+     e94:	00000d89 	.word	0x00000d89
+     e98:	20000118 	.word	0x20000118
+     e9c:	20000008 	.word	0x20000008
+     ea0:	000014cd 	.word	0x000014cd
+     ea4:	20000518 	.word	0x20000518
+     ea8:	200000f4 	.word	0x200000f4
+     eac:	20000518 	.word	0x20000518
+     eb0:	000002c9 	.word	0x000002c9
+
+00000eb4 <sys_dlist_remove>:
+ * @return N/A
+ */
+
+static inline void sys_dlist_remove(sys_dnode_t *node)
+{
+	node->prev->next = node->next;
+     eb4:	e890 000c 	ldmia.w	r0, {r2, r3}
+     eb8:	601a      	str	r2, [r3, #0]
+	node->next->prev = node->prev;
+     eba:	6802      	ldr	r2, [r0, #0]
+     ebc:	6053      	str	r3, [r2, #4]
+     ebe:	4770      	bx	lr
+
+00000ec0 <k_spin_lock.isra.11>:
+     ec0:	f04f 0320 	mov.w	r3, #32
+     ec4:	f3ef 8011 	mrs	r0, BASEPRI
+     ec8:	f383 8811 	msr	BASEPRI, r3
+	while (!atomic_cas(&l->locked, 0, 1)) {
+	}
+#endif
+
+	return k;
+}
+     ecc:	4770      	bx	lr
+	...
+
+00000ed0 <update_cache>:
+	return list->head == list;
+     ed0:	4b0d      	ldr	r3, [pc, #52]	; (f08 <update_cache+0x38>)
+     ed2:	4619      	mov	r1, r3
+     ed4:	f851 2f20 	ldr.w	r2, [r1, #32]!
+	return sys_dlist_is_empty(list) ? NULL : list->head;
+     ed8:	428a      	cmp	r2, r1
+     eda:	d000      	beq.n	ede <update_cache+0xe>
+	 * responsible for putting it back in _Swap and ISR return!),
+	 * which makes this choice simple.
+	 */
+	struct k_thread *th = _priq_run_best(&_kernel.ready_q.runq);
+
+	return th ? th : _current_cpu->idle_thread;
+     edc:	b902      	cbnz	r2, ee0 <update_cache+0x10>
+     ede:	68da      	ldr	r2, [r3, #12]
+	if (preempt_ok) {
+     ee0:	b970      	cbnz	r0, f00 <update_cache+0x30>
+	if (!_current || !_is_thread_ready(_current)) {
+     ee2:	6899      	ldr	r1, [r3, #8]
+     ee4:	b161      	cbz	r1, f00 <update_cache+0x30>
+	return !(_is_thread_prevented_from_running(thread) ||
+     ee6:	7a48      	ldrb	r0, [r1, #9]
+     ee8:	06c0      	lsls	r0, r0, #27
+     eea:	d109      	bne.n	f00 <update_cache+0x30>
+     eec:	6a48      	ldr	r0, [r1, #36]	; 0x24
+     eee:	3001      	adds	r0, #1
+     ef0:	d106      	bne.n	f00 <update_cache+0x30>
+	if (_is_preempt(_current) || is_metairq(th)) {
+     ef2:	8948      	ldrh	r0, [r1, #10]
+     ef4:	287f      	cmp	r0, #127	; 0x7f
+     ef6:	d903      	bls.n	f00 <update_cache+0x30>
+	return thread == _idle_thread;
+     ef8:	4804      	ldr	r0, [pc, #16]	; (f0c <update_cache+0x3c>)
+	if (_is_idle(_current)) {
+     efa:	6800      	ldr	r0, [r0, #0]
+     efc:	4281      	cmp	r1, r0
+     efe:	d101      	bne.n	f04 <update_cache+0x34>
+{
+#ifndef CONFIG_SMP
+	struct k_thread *th = next_up();
+
+	if (should_preempt(th, preempt_ok)) {
+		_kernel.ready_q.cache = th;
+     f00:	61da      	str	r2, [r3, #28]
+     f02:	4770      	bx	lr
+	} else {
+		_kernel.ready_q.cache = _current;
+     f04:	61d9      	str	r1, [r3, #28]
+	 * thread because if the thread gets preempted for whatever
+	 * reason the scheduler will make the same decision anyway.
+	 */
+	_current_cpu->swap_ok = preempt_ok;
+#endif
+}
+     f06:	4770      	bx	lr
+     f08:	200000e0 	.word	0x200000e0
+     f0c:	00001994 	.word	0x00001994
+
+00000f10 <_remove_thread_from_ready_q>:
+		update_cache(0);
+	}
+}
+
+void _remove_thread_from_ready_q(struct k_thread *thread)
+{
+     f10:	b510      	push	{r4, lr}
+     f12:	4601      	mov	r1, r0
+	LOCKED(&sched_lock) {
+     f14:	f7ff ffd4 	bl	ec0 <k_spin_lock.isra.11>
+		if (_is_thread_queued(thread)) {
+     f18:	7a4b      	ldrb	r3, [r1, #9]
+	LOCKED(&sched_lock) {
+     f1a:	4604      	mov	r4, r0
+		if (_is_thread_queued(thread)) {
+     f1c:	065a      	lsls	r2, r3, #25
+     f1e:	d50d      	bpl.n	f3c <_remove_thread_from_ready_q+0x2c>
+
+void _priq_dumb_remove(sys_dlist_t *pq, struct k_thread *thread)
+{
+	__ASSERT_NO_MSG(!_is_idle(thread));
+
+	sys_dlist_remove(&thread->base.qnode_dlist);
+     f20:	4608      	mov	r0, r1
+     f22:	f7ff ffc7 	bl	eb4 <sys_dlist_remove>
+	thread->base.thread_state &= ~states;
+     f26:	7a4b      	ldrb	r3, [r1, #9]
+     f28:	f023 0340 	bic.w	r3, r3, #64	; 0x40
+     f2c:	724b      	strb	r3, [r1, #9]
+			update_cache(thread == _current);
+     f2e:	4b05      	ldr	r3, [pc, #20]	; (f44 <_remove_thread_from_ready_q+0x34>)
+     f30:	6898      	ldr	r0, [r3, #8]
+     f32:	1a43      	subs	r3, r0, r1
+     f34:	4258      	negs	r0, r3
+     f36:	4158      	adcs	r0, r3
+     f38:	f7ff ffca 	bl	ed0 <update_cache>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+     f3c:	f384 8811 	msr	BASEPRI, r4
+     f40:	bd10      	pop	{r4, pc}
+     f42:	bf00      	nop
+     f44:	200000e0 	.word	0x200000e0
+
+00000f48 <_unpend_thread_no_timeout>:
+{
+     f48:	b510      	push	{r4, lr}
+     f4a:	4601      	mov	r1, r0
+	LOCKED(&sched_lock) {
+     f4c:	f7ff ffb8 	bl	ec0 <k_spin_lock.isra.11>
+     f50:	4604      	mov	r4, r0
+	sys_dlist_remove(&thread->base.qnode_dlist);
+     f52:	4608      	mov	r0, r1
+     f54:	f7ff ffae 	bl	eb4 <sys_dlist_remove>
+	thread->base.thread_state &= ~_THREAD_PENDING;
+     f58:	7a4b      	ldrb	r3, [r1, #9]
+     f5a:	f023 0302 	bic.w	r3, r3, #2
+     f5e:	724b      	strb	r3, [r1, #9]
+     f60:	f384 8811 	msr	BASEPRI, r4
+     f64:	bd10      	pop	{r4, pc}
+	...
+
+00000f68 <_reschedule>:
+{
+     f68:	4602      	mov	r2, r0
+  __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
+     f6a:	f3ef 8305 	mrs	r3, IPSR
+	if (_is_in_isr()) {
+     f6e:	2b0d      	cmp	r3, #13
+     f70:	d809      	bhi.n	f86 <_reschedule+0x1e>
+	if (_get_next_ready_thread() != _current) {
+     f72:	4b07      	ldr	r3, [pc, #28]	; (f90 <_reschedule+0x28>)
+     f74:	6899      	ldr	r1, [r3, #8]
+     f76:	69db      	ldr	r3, [r3, #28]
+     f78:	4299      	cmp	r1, r3
+     f7a:	d004      	beq.n	f86 <_reschedule+0x1e>
+		_set_time(remaining);
+	}
+
+#endif
+	/* Restart time slice count at new thread switch */
+	_time_slice_elapsed = 0;
+     f7c:	2200      	movs	r2, #0
+     f7e:	4b05      	ldr	r3, [pc, #20]	; (f94 <_reschedule+0x2c>)
+     f80:	601a      	str	r2, [r3, #0]
+     f82:	f7ff bbc9 	b.w	718 <__swap>
+     f86:	f382 8811 	msr	BASEPRI, r2
+}
+     f8a:	2000      	movs	r0, #0
+     f8c:	4770      	bx	lr
+     f8e:	bf00      	nop
+     f90:	200000e0 	.word	0x200000e0
+     f94:	2000010c 	.word	0x2000010c
+
+00000f98 <k_sched_unlock>:
+{
+     f98:	b510      	push	{r4, lr}
+	LOCKED(&sched_lock) {
+     f9a:	f7ff ff91 	bl	ec0 <k_spin_lock.isra.11>
+		++_current->base.sched_locked;
+     f9e:	4b0a      	ldr	r3, [pc, #40]	; (fc8 <k_sched_unlock+0x30>)
+	LOCKED(&sched_lock) {
+     fa0:	4604      	mov	r4, r0
+		++_current->base.sched_locked;
+     fa2:	689a      	ldr	r2, [r3, #8]
+		update_cache(1);
+     fa4:	2001      	movs	r0, #1
+		++_current->base.sched_locked;
+     fa6:	7ad3      	ldrb	r3, [r2, #11]
+     fa8:	3301      	adds	r3, #1
+     faa:	72d3      	strb	r3, [r2, #11]
+		update_cache(1);
+     fac:	f7ff ff90 	bl	ed0 <update_cache>
+     fb0:	f384 8811 	msr	BASEPRI, r4
+	__asm__ volatile(
+     fb4:	f04f 0320 	mov.w	r3, #32
+     fb8:	f3ef 8011 	mrs	r0, BASEPRI
+     fbc:	f383 8811 	msr	BASEPRI, r3
+}
+     fc0:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+	_reschedule(irq_lock());
+     fc4:	f7ff bfd0 	b.w	f68 <_reschedule>
+     fc8:	200000e0 	.word	0x200000e0
+
+00000fcc <_priq_dumb_add>:
+	return list->head == list;
+     fcc:	6803      	ldr	r3, [r0, #0]
+{
+     fce:	b510      	push	{r4, lr}
+	SYS_DLIST_FOR_EACH_CONTAINER(pq, t, base.qnode_dlist) {
+     fd0:	4298      	cmp	r0, r3
+     fd2:	bf08      	it	eq
+     fd4:	2300      	moveq	r3, #0
+     fd6:	b193      	cbz	r3, ffe <_priq_dumb_add+0x32>
+	if (t1->base.prio < t2->base.prio) {
+     fd8:	f991 400a 	ldrsb.w	r4, [r1, #10]
+     fdc:	f993 200a 	ldrsb.w	r2, [r3, #10]
+     fe0:	4294      	cmp	r4, r2
+     fe2:	da06      	bge.n	ff2 <_priq_dumb_add+0x26>
+		node->prev = insert_point->prev;
+     fe4:	685a      	ldr	r2, [r3, #4]
+		node->next = insert_point;
+     fe6:	600b      	str	r3, [r1, #0]
+		node->prev = insert_point->prev;
+     fe8:	604a      	str	r2, [r1, #4]
+		insert_point->prev->next = node;
+     fea:	685a      	ldr	r2, [r3, #4]
+     fec:	6011      	str	r1, [r2, #0]
+		insert_point->prev = node;
+     fee:	6059      	str	r1, [r3, #4]
+     ff0:	bd10      	pop	{r4, pc}
+	return (node == list->tail) ? NULL : node->next;
+     ff2:	6842      	ldr	r2, [r0, #4]
+     ff4:	4293      	cmp	r3, r2
+     ff6:	d002      	beq.n	ffe <_priq_dumb_add+0x32>
+     ff8:	681b      	ldr	r3, [r3, #0]
+	SYS_DLIST_FOR_EACH_CONTAINER(pq, t, base.qnode_dlist) {
+     ffa:	2b00      	cmp	r3, #0
+     ffc:	d1eb      	bne.n	fd6 <_priq_dumb_add+0xa>
+	node->next = list;
+     ffe:	6008      	str	r0, [r1, #0]
+	node->prev = list->tail;
+    1000:	6843      	ldr	r3, [r0, #4]
+    1002:	604b      	str	r3, [r1, #4]
+	list->tail->next = node;
+    1004:	6843      	ldr	r3, [r0, #4]
+    1006:	6019      	str	r1, [r3, #0]
+	list->tail = node;
+    1008:	6041      	str	r1, [r0, #4]
+    100a:	bd10      	pop	{r4, pc}
+
+0000100c <_add_thread_to_ready_q>:
+{
+    100c:	b538      	push	{r3, r4, r5, lr}
+    100e:	4604      	mov	r4, r0
+	LOCKED(&sched_lock) {
+    1010:	f7ff ff56 	bl	ec0 <k_spin_lock.isra.11>
+		_priq_run_add(&_kernel.ready_q.runq, thread);
+    1014:	4621      	mov	r1, r4
+	LOCKED(&sched_lock) {
+    1016:	4605      	mov	r5, r0
+		_priq_run_add(&_kernel.ready_q.runq, thread);
+    1018:	4806      	ldr	r0, [pc, #24]	; (1034 <_add_thread_to_ready_q+0x28>)
+    101a:	f7ff ffd7 	bl	fcc <_priq_dumb_add>
+	thread->base.thread_state |= states;
+    101e:	7a63      	ldrb	r3, [r4, #9]
+		update_cache(0);
+    1020:	2000      	movs	r0, #0
+    1022:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+    1026:	7263      	strb	r3, [r4, #9]
+    1028:	f7ff ff52 	bl	ed0 <update_cache>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    102c:	f385 8811 	msr	BASEPRI, r5
+    1030:	bd38      	pop	{r3, r4, r5, pc}
+    1032:	bf00      	nop
+    1034:	20000100 	.word	0x20000100
+
+00001038 <_move_thread_to_end_of_prio_q>:
+{
+    1038:	b538      	push	{r3, r4, r5, lr}
+    103a:	4604      	mov	r4, r0
+	LOCKED(&sched_lock) {
+    103c:	f7ff ff40 	bl	ec0 <k_spin_lock.isra.11>
+    1040:	4605      	mov	r5, r0
+	sys_dlist_remove(&thread->base.qnode_dlist);
+    1042:	4620      	mov	r0, r4
+    1044:	f7ff ff36 	bl	eb4 <sys_dlist_remove>
+		_priq_run_add(&_kernel.ready_q.runq, thread);
+    1048:	4621      	mov	r1, r4
+    104a:	4806      	ldr	r0, [pc, #24]	; (1064 <_move_thread_to_end_of_prio_q+0x2c>)
+    104c:	f7ff ffbe 	bl	fcc <_priq_dumb_add>
+    1050:	7a63      	ldrb	r3, [r4, #9]
+		update_cache(0);
+    1052:	2000      	movs	r0, #0
+    1054:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+    1058:	7263      	strb	r3, [r4, #9]
+    105a:	f7ff ff39 	bl	ed0 <update_cache>
+    105e:	f385 8811 	msr	BASEPRI, r5
+    1062:	bd38      	pop	{r3, r4, r5, pc}
+    1064:	20000100 	.word	0x20000100
+
+00001068 <_is_thread_time_slicing>:
+	if (_time_slice_duration <= 0 || !_is_preempt(thread) ||
+    1068:	4b13      	ldr	r3, [pc, #76]	; (10b8 <_is_thread_time_slicing+0x50>)
+{
+    106a:	b510      	push	{r4, lr}
+	if (_time_slice_duration <= 0 || !_is_preempt(thread) ||
+    106c:	681b      	ldr	r3, [r3, #0]
+{
+    106e:	4602      	mov	r2, r0
+	if (_time_slice_duration <= 0 || !_is_preempt(thread) ||
+    1070:	2b00      	cmp	r3, #0
+    1072:	dd1f      	ble.n	10b4 <_is_thread_time_slicing+0x4c>
+    1074:	8943      	ldrh	r3, [r0, #10]
+    1076:	2b7f      	cmp	r3, #127	; 0x7f
+    1078:	d81c      	bhi.n	10b4 <_is_thread_time_slicing+0x4c>
+	    _is_prio_higher(thread->base.prio, _time_slice_prio_ceiling)) {
+    107a:	4b10      	ldr	r3, [pc, #64]	; (10bc <_is_thread_time_slicing+0x54>)
+    107c:	f990 100a 	ldrsb.w	r1, [r0, #10]
+	if (_time_slice_duration <= 0 || !_is_preempt(thread) ||
+    1080:	681b      	ldr	r3, [r3, #0]
+    1082:	4299      	cmp	r1, r3
+    1084:	db16      	blt.n	10b4 <_is_thread_time_slicing+0x4c>
+	LOCKED(&sched_lock) {
+    1086:	f7ff ff1b 	bl	ec0 <k_spin_lock.isra.11>
+	return list->head == list;
+    108a:	490d      	ldr	r1, [pc, #52]	; (10c0 <_is_thread_time_slicing+0x58>)
+    108c:	4604      	mov	r4, r0
+    108e:	f851 3f20 	ldr.w	r3, [r1, #32]!
+	return sys_dlist_is_empty(list) ? NULL : list->head;
+    1092:	428b      	cmp	r3, r1
+    1094:	d00a      	beq.n	10ac <_is_thread_time_slicing+0x44>
+		if (next) {
+    1096:	b15b      	cbz	r3, 10b0 <_is_thread_time_slicing+0x48>
+			ret = thread->base.prio == next->base.prio;
+    1098:	f992 000a 	ldrsb.w	r0, [r2, #10]
+    109c:	f993 300a 	ldrsb.w	r3, [r3, #10]
+    10a0:	1ac3      	subs	r3, r0, r3
+    10a2:	4258      	negs	r0, r3
+    10a4:	4158      	adcs	r0, r3
+    10a6:	f384 8811 	msr	BASEPRI, r4
+	return ret;
+    10aa:	bd10      	pop	{r4, pc}
+    10ac:	2000      	movs	r0, #0
+    10ae:	e7fa      	b.n	10a6 <_is_thread_time_slicing+0x3e>
+    10b0:	4618      	mov	r0, r3
+    10b2:	e7f8      	b.n	10a6 <_is_thread_time_slicing+0x3e>
+		return 0;
+    10b4:	2000      	movs	r0, #0
+}
+    10b6:	bd10      	pop	{r4, pc}
+    10b8:	200000d8 	.word	0x200000d8
+    10bc:	200000dc 	.word	0x200000dc
+    10c0:	200000e0 	.word	0x200000e0
+
+000010c4 <_update_time_slice_before_swap>:
+	_time_slice_elapsed = 0;
+    10c4:	2200      	movs	r2, #0
+    10c6:	4b01      	ldr	r3, [pc, #4]	; (10cc <_update_time_slice_before_swap+0x8>)
+    10c8:	601a      	str	r2, [r3, #0]
+    10ca:	4770      	bx	lr
+    10cc:	2000010c 	.word	0x2000010c
+
+000010d0 <_sched_init>:
+	list->head = (sys_dnode_t *)list;
+    10d0:	4b02      	ldr	r3, [pc, #8]	; (10dc <_sched_init+0xc>)
+    10d2:	f103 0220 	add.w	r2, r3, #32
+    10d6:	621a      	str	r2, [r3, #32]
+	list->tail = (sys_dnode_t *)list;
+    10d8:	625a      	str	r2, [r3, #36]	; 0x24
+    10da:	4770      	bx	lr
+    10dc:	200000e0 	.word	0x200000e0
+
+000010e0 <_impl_k_current_get>:
+#endif
+
+k_tid_t _impl_k_current_get(void)
+{
+	return _current;
+}
+    10e0:	4b01      	ldr	r3, [pc, #4]	; (10e8 <_impl_k_current_get+0x8>)
+    10e2:	6898      	ldr	r0, [r3, #8]
+    10e4:	4770      	bx	lr
+    10e6:	bf00      	nop
+    10e8:	200000e0 	.word	0x200000e0
+
+000010ec <_nano_sys_clock_tick_announce>:
+ * timers that have expired and wake up the threads pending on them.
+ *
+ * @return N/A
+ */
+void _nano_sys_clock_tick_announce(s32_t ticks)
+{
+    10ec:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+    10f0:	4607      	mov	r7, r0
+    10f2:	b085      	sub	sp, #20
+	__asm__ volatile(
+    10f4:	f04f 0320 	mov.w	r3, #32
+    10f8:	f3ef 8011 	mrs	r0, BASEPRI
+    10fc:	f383 8811 	msr	BASEPRI, r3
+
+	K_DEBUG("ticks: %d\n", ticks);
+
+	/* 64-bit value, ensure atomic access with irq lock */
+	key = irq_lock();
+	_sys_clock_tick_count += ticks;
+    1100:	4961      	ldr	r1, [pc, #388]	; (1288 <_nano_sys_clock_tick_announce+0x19c>)
+    1102:	e9d1 4500 	ldrd	r4, r5, [r1]
+    1106:	19e2      	adds	r2, r4, r7
+    1108:	eb45 73e7 	adc.w	r3, r5, r7, asr #31
+    110c:	e9c1 2300 	strd	r2, r3, [r1]
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    1110:	f380 8811 	msr	BASEPRI, r0
+	list->head = (sys_dnode_t *)list;
+    1114:	ae02      	add	r6, sp, #8
+    1116:	9602      	str	r6, [sp, #8]
+	list->tail = (sys_dnode_t *)list;
+    1118:	9603      	str	r6, [sp, #12]
+	__asm__ volatile(
+    111a:	f04f 0320 	mov.w	r3, #32
+    111e:	f3ef 8011 	mrs	r0, BASEPRI
+    1122:	f383 8811 	msr	BASEPRI, r3
+	return list->head == list;
+    1126:	4c59      	ldr	r4, [pc, #356]	; (128c <_nano_sys_clock_tick_announce+0x1a0>)
+    1128:	4602      	mov	r2, r0
+    112a:	4621      	mov	r1, r4
+    112c:	f851 3f14 	ldr.w	r3, [r1, #20]!
+	return sys_dlist_is_empty(list) ? NULL : list->head;
+    1130:	428b      	cmp	r3, r1
+    1132:	d000      	beq.n	1136 <_nano_sys_clock_tick_announce+0x4a>
+	if (!next) {
+    1134:	b9fb      	cbnz	r3, 1176 <_nano_sys_clock_tick_announce+0x8a>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    1136:	f380 8811 	msr	BASEPRI, r0
+	if (!_is_thread_time_slicing(_current)) {
+    113a:	68a0      	ldr	r0, [r4, #8]
+    113c:	f7ff ff94 	bl	1068 <_is_thread_time_slicing>
+    1140:	b1b0      	cbz	r0, 1170 <_nano_sys_clock_tick_announce+0x84>
+	_time_slice_elapsed += __ticks_to_ms(ticks);
+    1142:	230a      	movs	r3, #10
+    1144:	4a52      	ldr	r2, [pc, #328]	; (1290 <_nano_sys_clock_tick_announce+0x1a4>)
+    1146:	6811      	ldr	r1, [r2, #0]
+    1148:	fb07 1703 	mla	r7, r7, r3, r1
+	if (_time_slice_elapsed >= _time_slice_duration) {
+    114c:	4b51      	ldr	r3, [pc, #324]	; (1294 <_nano_sys_clock_tick_announce+0x1a8>)
+	_time_slice_elapsed += __ticks_to_ms(ticks);
+    114e:	6017      	str	r7, [r2, #0]
+	if (_time_slice_elapsed >= _time_slice_duration) {
+    1150:	681b      	ldr	r3, [r3, #0]
+    1152:	429f      	cmp	r7, r3
+    1154:	db0c      	blt.n	1170 <_nano_sys_clock_tick_announce+0x84>
+		_time_slice_elapsed = 0;
+    1156:	2300      	movs	r3, #0
+    1158:	6013      	str	r3, [r2, #0]
+	__asm__ volatile(
+    115a:	f04f 0320 	mov.w	r3, #32
+    115e:	f3ef 8511 	mrs	r5, BASEPRI
+    1162:	f383 8811 	msr	BASEPRI, r3
+		_move_thread_to_end_of_prio_q(_current);
+    1166:	68a0      	ldr	r0, [r4, #8]
+    1168:	f7ff ff66 	bl	1038 <_move_thread_to_end_of_prio_q>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    116c:	f385 8811 	msr	BASEPRI, r5
+	if ((!remaining && next_to) || (next_to < remaining)) {
+		/* Clears current program if next_to = 0 and remaining > 0 */
+		_set_time(next_to);
+	}
+#endif
+}
+    1170:	b005      	add	sp, #20
+    1172:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+	_handling_timeouts = 1;
+    1176:	2101      	movs	r1, #1
+    1178:	4d47      	ldr	r5, [pc, #284]	; (1298 <_nano_sys_clock_tick_announce+0x1ac>)
+			timeout->delta_ticks_from_prev = 0;
+    117a:	f04f 0e00 	mov.w	lr, #0
+	_handling_timeouts = 1;
+    117e:	6029      	str	r1, [r5, #0]
+			timeout->delta_ticks_from_prev = _EXPIRED;
+    1180:	f06f 0c01 	mvn.w	ip, #1
+	_handling_timeouts = 1;
+    1184:	4639      	mov	r1, r7
+    1186:	9501      	str	r5, [sp, #4]
+		s32_t tmp = timeout->delta_ticks_from_prev;
+    1188:	6918      	ldr	r0, [r3, #16]
+		if (timeout->delta_ticks_from_prev < ticks) {
+    118a:	4288      	cmp	r0, r1
+			timeout->delta_ticks_from_prev -= ticks;
+    118c:	bfaa      	itet	ge
+    118e:	eba0 0801 	subge.w	r8, r0, r1
+			timeout->delta_ticks_from_prev = 0;
+    1192:	f8c3 e010 	strlt.w	lr, [r3, #16]
+			timeout->delta_ticks_from_prev -= ticks;
+    1196:	f8c3 8010 	strge.w	r8, [r3, #16]
+		ticks -= tmp;
+    119a:	1a09      	subs	r1, r1, r0
+	return (node == list->tail) ? NULL : node->next;
+    119c:	69a0      	ldr	r0, [r4, #24]
+		if (timeout->delta_ticks_from_prev == 0) {
+    119e:	691d      	ldr	r5, [r3, #16]
+    11a0:	4298      	cmp	r0, r3
+    11a2:	bf14      	ite	ne
+    11a4:	6818      	ldrne	r0, [r3, #0]
+    11a6:	2000      	moveq	r0, #0
+    11a8:	b9d5      	cbnz	r5, 11e0 <_nano_sys_clock_tick_announce+0xf4>
+	node->prev->next = node->next;
+    11aa:	e893 0220 	ldmia.w	r3, {r5, r9}
+    11ae:	f8c9 5000 	str.w	r5, [r9]
+	node->next->prev = node->prev;
+    11b2:	681d      	ldr	r5, [r3, #0]
+    11b4:	f8c5 9004 	str.w	r9, [r5, #4]
+	node->next = list->head;
+    11b8:	9d02      	ldr	r5, [sp, #8]
+	node->prev = list;
+    11ba:	e883 0060 	stmia.w	r3, {r5, r6}
+	list->head->prev = node;
+    11be:	9d02      	ldr	r5, [sp, #8]
+	list->head = node;
+    11c0:	9302      	str	r3, [sp, #8]
+	list->head->prev = node;
+    11c2:	606b      	str	r3, [r5, #4]
+			timeout->delta_ticks_from_prev = _EXPIRED;
+    11c4:	f8c3 c010 	str.w	ip, [r3, #16]
+    11c8:	f382 8811 	msr	BASEPRI, r2
+	__asm__ volatile(
+    11cc:	f04f 0320 	mov.w	r3, #32
+    11d0:	f3ef 8211 	mrs	r2, BASEPRI
+    11d4:	f383 8811 	msr	BASEPRI, r3
+	while (next) {
+    11d8:	4603      	mov	r3, r0
+    11da:	2800      	cmp	r0, #0
+    11dc:	d1d4      	bne.n	1188 <_nano_sys_clock_tick_announce+0x9c>
+    11de:	e001      	b.n	11e4 <_nano_sys_clock_tick_announce+0xf8>
+		} else if (ticks <= 0) {
+    11e0:	2900      	cmp	r1, #0
+    11e2:	dcf1      	bgt.n	11c8 <_nano_sys_clock_tick_announce+0xdc>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    11e4:	f382 8811 	msr	BASEPRI, r2
+	return list->head == list;
+    11e8:	9802      	ldr	r0, [sp, #8]
+	return sys_dlist_is_empty(list) ? NULL : list->head;
+    11ea:	42b0      	cmp	r0, r6
+    11ec:	d103      	bne.n	11f6 <_nano_sys_clock_tick_announce+0x10a>
+	_handling_timeouts = 0;
+    11ee:	2300      	movs	r3, #0
+    11f0:	9a01      	ldr	r2, [sp, #4]
+    11f2:	6013      	str	r3, [r2, #0]
+    11f4:	e7a1      	b.n	113a <_nano_sys_clock_tick_announce+0x4e>
+
+static inline void _handle_expired_timeouts(sys_dlist_t *expired)
+{
+	struct _timeout *timeout, *next;
+
+	SYS_DLIST_FOR_EACH_CONTAINER_SAFE(expired, timeout, next, node) {
+    11f6:	2800      	cmp	r0, #0
+    11f8:	d0f9      	beq.n	11ee <_nano_sys_clock_tick_announce+0x102>
+	return (node == list->tail) ? NULL : node->next;
+    11fa:	9b03      	ldr	r3, [sp, #12]
+    11fc:	4298      	cmp	r0, r3
+    11fe:	d102      	bne.n	1206 <_nano_sys_clock_tick_announce+0x11a>
+    1200:	f04f 0b00 	mov.w	fp, #0
+    1204:	e001      	b.n	120a <_nano_sys_clock_tick_announce+0x11e>
+    1206:	f8d0 b000 	ldr.w	fp, [r0]
+	timeout->delta_ticks_from_prev = _INACTIVE;
+    120a:	f04f 39ff 	mov.w	r9, #4294967295	; 0xffffffff
+		thread->base.timeout.wait_q = NULL;
+    120e:	f04f 0a00 	mov.w	sl, #0
+	node->prev->next = node->next;
+    1212:	e890 000c 	ldmia.w	r0, {r2, r3}
+    1216:	601a      	str	r2, [r3, #0]
+	node->next->prev = node->prev;
+    1218:	6802      	ldr	r2, [r0, #0]
+    121a:	6053      	str	r3, [r2, #4]
+	struct k_thread *thread = timeout->thread;
+    121c:	6886      	ldr	r6, [r0, #8]
+	__asm__ volatile(
+    121e:	f04f 0320 	mov.w	r3, #32
+    1222:	f3ef 8811 	mrs	r8, BASEPRI
+    1226:	f383 8811 	msr	BASEPRI, r3
+	timeout->delta_ticks_from_prev = _INACTIVE;
+    122a:	f8c0 9010 	str.w	r9, [r0, #16]
+	if (thread) {
+    122e:	b1d6      	cbz	r6, 1266 <_nano_sys_clock_tick_announce+0x17a>
+	if (timeout_obj->wait_q) {
+    1230:	68c3      	ldr	r3, [r0, #12]
+    1232:	b123      	cbz	r3, 123e <_nano_sys_clock_tick_announce+0x152>
+		_unpend_thread_no_timeout(thread);
+    1234:	4630      	mov	r0, r6
+    1236:	f7ff fe87 	bl	f48 <_unpend_thread_no_timeout>
+		thread->base.timeout.wait_q = NULL;
+    123a:	f8c6 a020 	str.w	sl, [r6, #32]
+	thread->base.thread_state &= ~_THREAD_PRESTART;
+    123e:	7a73      	ldrb	r3, [r6, #9]
+    1240:	f023 0204 	bic.w	r2, r3, #4
+	return !(_is_thread_prevented_from_running(thread) ||
+    1244:	f013 0f1b 	tst.w	r3, #27
+	thread->base.thread_state &= ~_THREAD_PRESTART;
+    1248:	7272      	strb	r2, [r6, #9]
+	return !(_is_thread_prevented_from_running(thread) ||
+    124a:	d102      	bne.n	1252 <_nano_sys_clock_tick_announce+0x166>
+    124c:	6a73      	ldr	r3, [r6, #36]	; 0x24
+    124e:	3301      	adds	r3, #1
+    1250:	d015      	beq.n	127e <_nano_sys_clock_tick_announce+0x192>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    1252:	f388 8811 	msr	BASEPRI, r8
+	SYS_DLIST_FOR_EACH_CONTAINER_SAFE(expired, timeout, next, node) {
+    1256:	f1bb 0f00 	cmp.w	fp, #0
+    125a:	d0c8      	beq.n	11ee <_nano_sys_clock_tick_announce+0x102>
+	return (node == list->tail) ? NULL : node->next;
+    125c:	9b03      	ldr	r3, [sp, #12]
+    125e:	455b      	cmp	r3, fp
+    1260:	d108      	bne.n	1274 <_nano_sys_clock_tick_announce+0x188>
+    1262:	2300      	movs	r3, #0
+    1264:	e008      	b.n	1278 <_nano_sys_clock_tick_announce+0x18c>
+    1266:	f388 8811 	msr	BASEPRI, r8
+		if (timeout->func) {
+    126a:	6943      	ldr	r3, [r0, #20]
+    126c:	2b00      	cmp	r3, #0
+    126e:	d0f2      	beq.n	1256 <_nano_sys_clock_tick_announce+0x16a>
+			timeout->func(timeout);
+    1270:	4798      	blx	r3
+    1272:	e7f0      	b.n	1256 <_nano_sys_clock_tick_announce+0x16a>
+    1274:	f8db 3000 	ldr.w	r3, [fp]
+	SYS_DLIST_FOR_EACH_CONTAINER_SAFE(expired, timeout, next, node) {
+    1278:	4658      	mov	r0, fp
+    127a:	469b      	mov	fp, r3
+    127c:	e7c9      	b.n	1212 <_nano_sys_clock_tick_announce+0x126>
+		_add_thread_to_ready_q(thread);
+    127e:	4630      	mov	r0, r6
+    1280:	f7ff fec4 	bl	100c <_add_thread_to_ready_q>
+    1284:	e7e5      	b.n	1252 <_nano_sys_clock_tick_announce+0x166>
+    1286:	bf00      	nop
+    1288:	20000110 	.word	0x20000110
+    128c:	200000e0 	.word	0x200000e0
+    1290:	2000010c 	.word	0x2000010c
+    1294:	200000d8 	.word	0x200000d8
+    1298:	20000108 	.word	0x20000108
+
+0000129c <_abort_timeout>:
+}
+
+/* returns _INACTIVE if the timer is not active */
+static inline int _abort_timeout(struct _timeout *timeout)
+{
+	if (timeout->delta_ticks_from_prev == _INACTIVE) {
+    129c:	6903      	ldr	r3, [r0, #16]
+    129e:	1c5a      	adds	r2, r3, #1
+    12a0:	d011      	beq.n	12c6 <_abort_timeout+0x2a>
+		return _INACTIVE;
+	}
+
+	if (!sys_dlist_is_tail(&_timeout_q, &timeout->node)) {
+    12a2:	4a0a      	ldr	r2, [pc, #40]	; (12cc <_abort_timeout+0x30>)
+    12a4:	6992      	ldr	r2, [r2, #24]
+    12a6:	4290      	cmp	r0, r2
+    12a8:	bf1f      	itttt	ne
+    12aa:	6801      	ldrne	r1, [r0, #0]
+		sys_dnode_t *next_node =
+			sys_dlist_peek_next(&_timeout_q, &timeout->node);
+		struct _timeout *next = (struct _timeout *)next_node;
+
+		next->delta_ticks_from_prev += timeout->delta_ticks_from_prev;
+    12ac:	690a      	ldrne	r2, [r1, #16]
+    12ae:	189b      	addne	r3, r3, r2
+    12b0:	610b      	strne	r3, [r1, #16]
+	node->prev->next = node->next;
+    12b2:	e890 000c 	ldmia.w	r0, {r2, r3}
+    12b6:	601a      	str	r2, [r3, #0]
+	node->next->prev = node->prev;
+    12b8:	6802      	ldr	r2, [r0, #0]
+    12ba:	6053      	str	r3, [r2, #4]
+	}
+	sys_dlist_remove(&timeout->node);
+	timeout->delta_ticks_from_prev = _INACTIVE;
+    12bc:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
+    12c0:	6103      	str	r3, [r0, #16]
+
+	return 0;
+    12c2:	2000      	movs	r0, #0
+    12c4:	4770      	bx	lr
+		return _INACTIVE;
+    12c6:	4618      	mov	r0, r3
+}
+    12c8:	4770      	bx	lr
+    12ca:	bf00      	nop
+    12cc:	200000e0 	.word	0x200000e0
+
+000012d0 <_ready_thread>:
+	return !(_is_thread_prevented_from_running(thread) ||
+    12d0:	7a42      	ldrb	r2, [r0, #9]
+    12d2:	06d2      	lsls	r2, r2, #27
+    12d4:	d104      	bne.n	12e0 <_ready_thread+0x10>
+    12d6:	6a43      	ldr	r3, [r0, #36]	; 0x24
+    12d8:	3301      	adds	r3, #1
+    12da:	d101      	bne.n	12e0 <_ready_thread+0x10>
+		_add_thread_to_ready_q(thread);
+    12dc:	f7ff be96 	b.w	100c <_add_thread_to_ready_q>
+    12e0:	4770      	bx	lr
+	...
+
+000012e4 <schedule_new_thread.part.11>:
+Z_SYSCALL_HANDLER1_SIMPLE_VOID(k_thread_start, K_OBJ_THREAD, struct k_thread *);
+#endif
+#endif
+
+#ifdef CONFIG_MULTITHREADING
+static void schedule_new_thread(struct k_thread *thread, s32_t delay)
+    12e4:	b5f0      	push	{r4, r5, r6, r7, lr}
+	__asm__ volatile(
+    12e6:	f04f 0320 	mov.w	r3, #32
+    12ea:	f3ef 8611 	mrs	r6, BASEPRI
+    12ee:	f383 8811 	msr	BASEPRI, r3
+#ifdef _NON_OPTIMIZED_TICKS_PER_SEC
+extern s32_t _ms_to_ticks(s32_t ms);
+#else
+static ALWAYS_INLINE s32_t _ms_to_ticks(s32_t ms)
+{
+	return (s32_t)ceiling_fraction((u32_t)ms, _ms_per_tick);
+    12f2:	230a      	movs	r3, #10
+    12f4:	3109      	adds	r1, #9
+    12f6:	fbb1 f1f3 	udiv	r1, r1, r3
+	return list->head == list;
+    12fa:	4a17      	ldr	r2, [pc, #92]	; (1358 <schedule_new_thread.part.11+0x74>)
+{
+#ifdef CONFIG_SYS_CLOCK_EXISTS
+	if (delay == 0) {
+		k_thread_start(thread);
+	} else {
+		s32_t ticks = _TICK_ALIGN + _ms_to_ticks(delay);
+    12fc:	3101      	adds	r1, #1
+{
+	__ASSERT(timeout_in_ticks >= 0, "");
+
+	timeout->delta_ticks_from_prev = timeout_in_ticks;
+	timeout->thread = thread;
+	timeout->wait_q = (sys_dlist_t *)wait_q;
+    12fe:	2300      	movs	r3, #0
+	timeout->delta_ticks_from_prev = timeout_in_ticks;
+    1300:	6241      	str	r1, [r0, #36]	; 0x24
+    1302:	4611      	mov	r1, r2
+	timeout->wait_q = (sys_dlist_t *)wait_q;
+    1304:	6203      	str	r3, [r0, #32]
+    1306:	f851 3f14 	ldr.w	r3, [r1, #20]!
+
+static inline void _add_thread_timeout(struct k_thread *thread,
+				       _wait_q_t *wait_q,
+				       s32_t timeout_in_ticks)
+{
+	_add_timeout(thread, &thread->base.timeout, wait_q, timeout_in_ticks);
+    130a:	f100 0514 	add.w	r5, r0, #20
+	return sys_dlist_is_empty(list) ? NULL : list->head;
+    130e:	428b      	cmp	r3, r1
+	timeout->thread = thread;
+    1310:	61c0      	str	r0, [r0, #28]
+    1312:	d108      	bne.n	1326 <schedule_new_thread.part.11+0x42>
+	node->next = list;
+    1314:	6141      	str	r1, [r0, #20]
+	node->prev = list->tail;
+    1316:	6993      	ldr	r3, [r2, #24]
+    1318:	6183      	str	r3, [r0, #24]
+	list->tail->next = node;
+    131a:	6993      	ldr	r3, [r2, #24]
+    131c:	601d      	str	r5, [r3, #0]
+	list->tail = node;
+    131e:	6195      	str	r5, [r2, #24]
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    1320:	f386 8811 	msr	BASEPRI, r6
+    1324:	bdf0      	pop	{r4, r5, r6, r7, pc}
+	SYS_DLIST_FOR_EACH_CONTAINER(&_timeout_q, in_q, node) {
+    1326:	2b00      	cmp	r3, #0
+    1328:	d0f4      	beq.n	1314 <schedule_new_thread.part.11+0x30>
+    132a:	f8d2 e018 	ldr.w	lr, [r2, #24]
+		if (*delta <= in_q->delta_ticks_from_prev) {
+    132e:	6a44      	ldr	r4, [r0, #36]	; 0x24
+    1330:	691f      	ldr	r7, [r3, #16]
+    1332:	42bc      	cmp	r4, r7
+    1334:	dc08      	bgt.n	1348 <schedule_new_thread.part.11+0x64>
+		node->prev = insert_point->prev;
+    1336:	685a      	ldr	r2, [r3, #4]
+			in_q->delta_ticks_from_prev -= *delta;
+    1338:	1b3c      	subs	r4, r7, r4
+    133a:	611c      	str	r4, [r3, #16]
+    133c:	6182      	str	r2, [r0, #24]
+		node->next = insert_point;
+    133e:	6143      	str	r3, [r0, #20]
+		insert_point->prev->next = node;
+    1340:	685a      	ldr	r2, [r3, #4]
+    1342:	6015      	str	r5, [r2, #0]
+		insert_point->prev = node;
+    1344:	605d      	str	r5, [r3, #4]
+    1346:	e7eb      	b.n	1320 <schedule_new_thread.part.11+0x3c>
+		*delta -= in_q->delta_ticks_from_prev;
+    1348:	1be4      	subs	r4, r4, r7
+	return (node == list->tail) ? NULL : node->next;
+    134a:	4573      	cmp	r3, lr
+    134c:	6244      	str	r4, [r0, #36]	; 0x24
+    134e:	d0e1      	beq.n	1314 <schedule_new_thread.part.11+0x30>
+    1350:	681b      	ldr	r3, [r3, #0]
+	SYS_DLIST_FOR_EACH_CONTAINER(&_timeout_q, in_q, node) {
+    1352:	2b00      	cmp	r3, #0
+    1354:	d1eb      	bne.n	132e <schedule_new_thread.part.11+0x4a>
+    1356:	e7dd      	b.n	1314 <schedule_new_thread.part.11+0x30>
+    1358:	200000e0 	.word	0x200000e0
+
+0000135c <k_is_in_isr>:
+    135c:	f3ef 8005 	mrs	r0, IPSR
+}
+    1360:	280d      	cmp	r0, #13
+    1362:	bf94      	ite	ls
+    1364:	2000      	movls	r0, #0
+    1366:	2001      	movhi	r0, #1
+    1368:	4770      	bx	lr
+	...
+
+0000136c <_is_thread_essential>:
+	return _current->base.user_options & K_ESSENTIAL;
+    136c:	4b02      	ldr	r3, [pc, #8]	; (1378 <_is_thread_essential+0xc>)
+    136e:	689b      	ldr	r3, [r3, #8]
+    1370:	7a18      	ldrb	r0, [r3, #8]
+}
+    1372:	f000 0001 	and.w	r0, r0, #1
+    1376:	4770      	bx	lr
+    1378:	200000e0 	.word	0x200000e0
+
+0000137c <_impl_k_thread_start>:
+{
+    137c:	b510      	push	{r4, lr}
+	__asm__ volatile(
+    137e:	f04f 0320 	mov.w	r3, #32
+    1382:	f3ef 8411 	mrs	r4, BASEPRI
+    1386:	f383 8811 	msr	BASEPRI, r3
+    138a:	7a43      	ldrb	r3, [r0, #9]
+	if (_has_thread_started(thread)) {
+    138c:	0759      	lsls	r1, r3, #29
+    138e:	d402      	bmi.n	1396 <_impl_k_thread_start+0x1a>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    1390:	f384 8811 	msr	BASEPRI, r4
+    1394:	bd10      	pop	{r4, pc}
+	thread->base.thread_state &= ~_THREAD_PRESTART;
+    1396:	f023 0304 	bic.w	r3, r3, #4
+    139a:	7243      	strb	r3, [r0, #9]
+	_ready_thread(thread);
+    139c:	f7ff ff98 	bl	12d0 <_ready_thread>
+	_reschedule(key);
+    13a0:	4620      	mov	r0, r4
+}
+    13a2:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+	_reschedule(key);
+    13a6:	f7ff bddf 	b.w	f68 <_reschedule>
+	...
+
+000013ac <_setup_new_thread>:
+void _setup_new_thread(struct k_thread *new_thread,
+		       k_thread_stack_t *stack, size_t stack_size,
+		       k_thread_entry_t entry,
+		       void *p1, void *p2, void *p3,
+		       int prio, u32_t options)
+{
+    13ac:	b530      	push	{r4, r5, lr}
+    13ae:	b087      	sub	sp, #28
+	stack_size = adjust_stack_size(stack_size);
+
+	_new_thread(new_thread, stack, stack_size, entry, p1, p2, p3,
+    13b0:	9d0e      	ldr	r5, [sp, #56]	; 0x38
+{
+    13b2:	4604      	mov	r4, r0
+	_new_thread(new_thread, stack, stack_size, entry, p1, p2, p3,
+    13b4:	9504      	str	r5, [sp, #16]
+    13b6:	9d0d      	ldr	r5, [sp, #52]	; 0x34
+    13b8:	9503      	str	r5, [sp, #12]
+    13ba:	9d0c      	ldr	r5, [sp, #48]	; 0x30
+    13bc:	9502      	str	r5, [sp, #8]
+    13be:	9d0b      	ldr	r5, [sp, #44]	; 0x2c
+    13c0:	9501      	str	r5, [sp, #4]
+    13c2:	9d0a      	ldr	r5, [sp, #40]	; 0x28
+    13c4:	9500      	str	r5, [sp, #0]
+    13c6:	f7ff fb43 	bl	a50 <_new_thread>
+	/* Any given thread has access to itself */
+	k_object_access_grant(new_thread, new_thread);
+#endif
+#ifdef CONFIG_ARCH_HAS_CUSTOM_SWAP_TO_MAIN
+	/* _current may be null if the dummy thread is not used */
+	if (!_current) {
+    13ca:	4b04      	ldr	r3, [pc, #16]	; (13dc <_setup_new_thread+0x30>)
+    13cc:	689b      	ldr	r3, [r3, #8]
+    13ce:	b913      	cbnz	r3, 13d6 <_setup_new_thread+0x2a>
+	}
+#endif
+#ifdef CONFIG_SCHED_DEADLINE
+	new_thread->base.prio_deadline = 0;
+#endif
+	new_thread->resource_pool = _current->resource_pool;
+    13d0:	65e3      	str	r3, [r4, #92]	; 0x5c
+}
+    13d2:	b007      	add	sp, #28
+    13d4:	bd30      	pop	{r4, r5, pc}
+	new_thread->resource_pool = _current->resource_pool;
+    13d6:	6ddb      	ldr	r3, [r3, #92]	; 0x5c
+    13d8:	e7fa      	b.n	13d0 <_setup_new_thread+0x24>
+    13da:	bf00      	nop
+    13dc:	200000e0 	.word	0x200000e0
+
+000013e0 <_k_thread_single_abort>:
+Z_SYSCALL_HANDLER1_SIMPLE_VOID(k_thread_resume, K_OBJ_THREAD, k_tid_t);
+#endif
+
+void _k_thread_single_abort(struct k_thread *thread)
+{
+	if (thread->fn_abort != NULL) {
+    13e0:	6d43      	ldr	r3, [r0, #84]	; 0x54
+{
+    13e2:	b510      	push	{r4, lr}
+    13e4:	4604      	mov	r4, r0
+	if (thread->fn_abort != NULL) {
+    13e6:	b103      	cbz	r3, 13ea <_k_thread_single_abort+0xa>
+		thread->fn_abort();
+    13e8:	4798      	blx	r3
+    13ea:	7a63      	ldrb	r3, [r4, #9]
+	return !(_is_thread_prevented_from_running(thread) ||
+    13ec:	06da      	lsls	r2, r3, #27
+    13ee:	d106      	bne.n	13fe <_k_thread_single_abort+0x1e>
+    13f0:	6a62      	ldr	r2, [r4, #36]	; 0x24
+    13f2:	3201      	adds	r2, #1
+    13f4:	d103      	bne.n	13fe <_k_thread_single_abort+0x1e>
+	}
+
+	if (_is_thread_ready(thread)) {
+		_remove_thread_from_ready_q(thread);
+    13f6:	4620      	mov	r0, r4
+    13f8:	f7ff fd8a 	bl	f10 <_remove_thread_from_ready_q>
+    13fc:	e00b      	b.n	1416 <_k_thread_single_abort+0x36>
+	} else {
+		if (_is_thread_pending(thread)) {
+    13fe:	079b      	lsls	r3, r3, #30
+    1400:	d502      	bpl.n	1408 <_k_thread_single_abort+0x28>
+			_unpend_thread_no_timeout(thread);
+    1402:	4620      	mov	r0, r4
+    1404:	f7ff fda0 	bl	f48 <_unpend_thread_no_timeout>
+		}
+		if (_is_thread_timeout_active(thread)) {
+    1408:	6a63      	ldr	r3, [r4, #36]	; 0x24
+    140a:	3301      	adds	r3, #1
+    140c:	d003      	beq.n	1416 <_k_thread_single_abort+0x36>
+	return _abort_timeout(&thread->base.timeout);
+    140e:	f104 0014 	add.w	r0, r4, #20
+    1412:	f7ff ff43 	bl	129c <_abort_timeout>
+			_abort_thread_timeout(thread);
+		}
+	}
+
+	thread->base.thread_state |= _THREAD_DEAD;
+    1416:	7a63      	ldrb	r3, [r4, #9]
+    1418:	f043 0308 	orr.w	r3, r3, #8
+    141c:	7263      	strb	r3, [r4, #9]
+	_k_object_uninit(thread);
+
+	/* Revoke permissions on thread's ID so that it may be recycled */
+	_thread_perms_all_clear(thread);
+#endif
+}
+    141e:	bd10      	pop	{r4, pc}
+
+00001420 <_init_static_threads>:
+	}
+}
+#endif /* CONFIG_USERSPACE */
+
+void _init_static_threads(void)
+{
+    1420:	b5f0      	push	{r4, r5, r6, r7, lr}
+	unsigned int  key;
+
+	_FOREACH_STATIC_THREAD(thread_data) {
+    1422:	4f21      	ldr	r7, [pc, #132]	; (14a8 <_init_static_threads+0x88>)
+    1424:	4d21      	ldr	r5, [pc, #132]	; (14ac <_init_static_threads+0x8c>)
+    1426:	463e      	mov	r6, r7
+{
+    1428:	b087      	sub	sp, #28
+	_FOREACH_STATIC_THREAD(thread_data) {
+    142a:	42bd      	cmp	r5, r7
+    142c:	f105 042c 	add.w	r4, r5, #44	; 0x2c
+    1430:	d314      	bcc.n	145c <_init_static_threads+0x3c>
+{
+#ifdef CONFIG_PREEMPT_ENABLED
+	__ASSERT(!_is_in_isr(), "");
+	__ASSERT(_current->base.sched_locked != 1, "");
+
+	--_current->base.sched_locked;
+    1432:	4b1f      	ldr	r3, [pc, #124]	; (14b0 <_init_static_threads+0x90>)
+    1434:	689a      	ldr	r2, [r3, #8]
+    1436:	7ad3      	ldrb	r3, [r2, #11]
+    1438:	3b01      	subs	r3, #1
+    143a:	72d3      	strb	r3, [r2, #11]
+	__asm__ volatile(
+    143c:	f04f 0320 	mov.w	r3, #32
+    1440:	f3ef 8511 	mrs	r5, BASEPRI
+    1444:	f383 8811 	msr	BASEPRI, r3
+	 *
+	 * Note that static threads defined using the legacy API have a
+	 * delay of K_FOREVER.
+	 */
+	key = irq_lock();
+	_FOREACH_STATIC_THREAD(thread_data) {
+    1448:	4c18      	ldr	r4, [pc, #96]	; (14ac <_init_static_threads+0x8c>)
+    144a:	42b4      	cmp	r4, r6
+    144c:	d31f      	bcc.n	148e <_init_static_threads+0x6e>
+	__asm__ volatile("msr BASEPRI, %0" :  : "r"(key) : "memory");
+    144e:	f385 8811 	msr	BASEPRI, r5
+					    thread_data->init_delay);
+		}
+	}
+	irq_unlock(key);
+	k_sched_unlock();
+}
+    1452:	b007      	add	sp, #28
+    1454:	e8bd 40f0 	ldmia.w	sp!, {r4, r5, r6, r7, lr}
+	k_sched_unlock();
+    1458:	f7ff bd9e 	b.w	f98 <k_sched_unlock>
+		_setup_new_thread(
+    145c:	f854 3c0c 	ldr.w	r3, [r4, #-12]
+    1460:	f1a4 002c 	sub.w	r0, r4, #44	; 0x2c
+    1464:	9304      	str	r3, [sp, #16]
+    1466:	f854 3c10 	ldr.w	r3, [r4, #-16]
+    146a:	9303      	str	r3, [sp, #12]
+    146c:	f854 3c14 	ldr.w	r3, [r4, #-20]
+    1470:	9302      	str	r3, [sp, #8]
+    1472:	f854 3c18 	ldr.w	r3, [r4, #-24]
+    1476:	9301      	str	r3, [sp, #4]
+    1478:	f854 3c1c 	ldr.w	r3, [r4, #-28]
+    147c:	9300      	str	r3, [sp, #0]
+    147e:	c80f      	ldmia	r0, {r0, r1, r2, r3}
+    1480:	f7ff ff94 	bl	13ac <_setup_new_thread>
+		thread_data->init_thread->init_data = thread_data;
+    1484:	f854 3c2c 	ldr.w	r3, [r4, #-44]
+    1488:	651d      	str	r5, [r3, #80]	; 0x50
+    148a:	4625      	mov	r5, r4
+    148c:	e7cd      	b.n	142a <_init_static_threads+0xa>
+		if (thread_data->init_delay != K_FOREVER) {
+    148e:	6a61      	ldr	r1, [r4, #36]	; 0x24
+    1490:	1c4b      	adds	r3, r1, #1
+    1492:	d003      	beq.n	149c <_init_static_threads+0x7c>
+			schedule_new_thread(thread_data->init_thread,
+    1494:	6820      	ldr	r0, [r4, #0]
+	if (delay == 0) {
+    1496:	b919      	cbnz	r1, 14a0 <_init_static_threads+0x80>
+
+K_SYSCALL_DECLARE1_VOID(K_SYSCALL_K_THREAD_START, k_thread_start, k_tid_t, thread);
+    1498:	f7ff ff70 	bl	137c <_impl_k_thread_start>
+	_FOREACH_STATIC_THREAD(thread_data) {
+    149c:	342c      	adds	r4, #44	; 0x2c
+    149e:	e7d4      	b.n	144a <_init_static_threads+0x2a>
+    14a0:	f7ff ff20 	bl	12e4 <schedule_new_thread.part.11>
+    14a4:	e7fa      	b.n	149c <_init_static_threads+0x7c>
+    14a6:	bf00      	nop
+    14a8:	20000e8c 	.word	0x20000e8c
+    14ac:	20000e8c 	.word	0x20000e8c
+    14b0:	200000e0 	.word	0x200000e0
+
+000014b4 <_init_thread_base>:
+void _init_thread_base(struct _thread_base *thread_base, int priority,
+		       u32_t initial_state, unsigned int options)
+{
+	/* k_q_node is initialized upon first insertion in a list */
+
+	thread_base->user_options = (u8_t)options;
+    14b4:	7203      	strb	r3, [r0, #8]
+	thread_base->thread_state = (u8_t)initial_state;
+    14b6:	7242      	strb	r2, [r0, #9]
+
+	thread_base->prio = priority;
+
+	thread_base->sched_locked = 0;
+    14b8:	2300      	movs	r3, #0
+	t->delta_ticks_from_prev = _INACTIVE;
+    14ba:	f04f 32ff 	mov.w	r2, #4294967295	; 0xffffffff
+	thread_base->prio = priority;
+    14be:	7281      	strb	r1, [r0, #10]
+	thread_base->sched_locked = 0;
+    14c0:	72c3      	strb	r3, [r0, #11]
+    14c2:	6242      	str	r2, [r0, #36]	; 0x24
+	t->wait_q = NULL;
+    14c4:	6203      	str	r3, [r0, #32]
+	t->thread = NULL;
+    14c6:	61c3      	str	r3, [r0, #28]
+	t->func = func;
+    14c8:	6283      	str	r3, [r0, #40]	; 0x28
+    14ca:	4770      	bx	lr
+
+000014cc <idle>:
+#else
+#define IDLE_YIELD_IF_COOP() do { } while ((0))
+#endif
+
+void idle(void *unused1, void *unused2, void *unused3)
+{
+    14cc:	b508      	push	{r3, lr}
+	__asm__ volatile(
+    14ce:	f04f 0220 	mov.w	r2, #32
+    14d2:	f3ef 8311 	mrs	r3, BASEPRI
+    14d6:	f382 8811 	msr	BASEPRI, r2
+	k_cpu_idle();
+    14da:	f7ff fae5 	bl	aa8 <k_cpu_idle>
+    14de:	e7f6      	b.n	14ce <idle+0x2>
+
+000014e0 <_OffsetAbsSyms>:
+
+#ifdef CONFIG_FLOAT
+GEN_ABSOLUTE_SYM(_K_THREAD_NO_FLOAT_SIZEOF, sizeof(struct k_thread) -
+					    sizeof(struct _preempt_float));
+#else
+GEN_ABSOLUTE_SYM(_K_THREAD_NO_FLOAT_SIZEOF, sizeof(struct k_thread));
+    14e0:	4770      	bx	lr
