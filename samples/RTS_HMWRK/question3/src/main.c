@@ -8,14 +8,9 @@
 
 #include <misc/__assert.h>
 
-#define SEMAPHORES 1
-#define MUTEXES 2
-#define STACKS 3
-#define FIFOS 4
-#define LIFOS 5
 
-/**************************************/
-/* control the behaviour of the demo **/
+#define MUTEXES 2
+
 
 #ifndef DEBUG_PRINTF
 #define DEBUG_PRINTF 0
@@ -69,7 +64,7 @@
 
 #define fork(x) (forks[x])
 
-static void set_phil_state_pos(int id)
+static void set_thread_state_pos(int id)
 {
 #if !DEBUG_PRINTF
 	PRINTF("\x1b[%d;%dH", id + 1, 1);
@@ -81,7 +76,7 @@ static void print_phil_state(int id, const char *fmt, s32_t delay)
 {
 	int prio = k_thread_priority_get(k_current_get());
 
-	set_phil_state_pos(id);
+	set_thread_state_pos(id);
 
 	PRINTF("Philosopher %d [%s:%s%d] ",
 	       id, prio < 0 ? "C" : "P",
@@ -125,14 +120,7 @@ static void busy_wait_ms(int32_t ms){
 			tempo = k_uptime_get();
 		}
 	}	
-	/*int32_t deadline = k_uptime_get() + ms;
 
-	volatile int32_t now = k_uptime_get();
-
-	while (now < deadline) {
-		now = k_uptime_get();
-		k_yield();
-	}*/
 }
 
 void philosopher(void *id, void *ct, void *periodo)
@@ -145,23 +133,6 @@ void philosopher(void *id, void *ct, void *periodo)
 	int64_t tempo;
 	int64_t tiempo;
 
-	/*ARG_UNUSED(unused1);
-	ARG_UNUSED(unused2);
-
-	fork_t fork1;
-	fork_t fork2;
-
-	int my_id = (int)id;
-
-	/* Djkstra's solution: always pick up the lowest numbered fork first 
-	if (is_last_philosopher(my_id)) {
-		fork1 = fork(0);
-		fork2 = fork(my_id);
-	} else {
-		fork1 = fork(my_id);
-		fork2 = fork(my_id + 1);
-	}
-	*/
 	while (1) {
 		s32_t delay;
 		//k_sched_lock();		
@@ -170,9 +141,6 @@ void philosopher(void *id, void *ct, void *periodo)
 
 		//TEMPO QUE "ENTRA" NA THREAD
 		int t = k_uptime_get();
-		//while(t>my_peri){
-		//	t = t/10;
-		//}
 
 		//TUDO MULTIPLICADO POR 1000 POR CAUSA DO PASSO DO TIMER
 		delay =1000*(my_peri-my_ct);
@@ -198,22 +166,7 @@ void philosopher(void *id, void *ct, void *periodo)
 		
 		//CÓDIGOS DAS TENTATIVAS PASSADAS
 
-		//for(i = 0; i< 10000*my_ct; i=i+1){
-		//	PRINTF("thread :%d  %d    %d\n",my_id,tempo, i);			
-		//	k_yield();				
-		//}
-		//k_busy_wait(1000*my_ct);		
-		
-		/*tempo = k_uptime_get();
-		
-		tiempo = my_peri*10000;
-		*/
-		//if(k_uptime_get()%my_peri == 0){
-		//	PRINTF("deveria acordar");			
-			//k_wakeup(&threads(my_id));
-		//}
-
-		//k_yield();	
+	
 	}
 
 }
