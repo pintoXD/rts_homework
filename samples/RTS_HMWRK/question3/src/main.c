@@ -27,10 +27,6 @@
 #ifndef FORKS
 #define FORKS MUTEXES
 #if 0
-#define FORKS SEMAPHORES
-#define FORKS STACKS
-#define FORKS FIFOS
-#define FORKS LIFOS
 #endif
 #endif
 
@@ -38,15 +34,9 @@
 #define SAME_PRIO 0
 #endif
 
-/* end - control behaviour of the demo */
-/***************************************/
 
 #define STACK_SIZE 768
 
-/*
- * There are multiple threads doing printfs and they may conflict.
- * Therefore use puts() instead of printf().
- */
 #if defined(CONFIG_STDOUT_CONSOLE)
 #define PRINTF(...) { char output[256]; \
 		      sprintf(output, __VA_ARGS__); puts(output); }
@@ -78,7 +68,7 @@ static void print_phil_state(int id, const char *fmt, s32_t delay)
 
 	set_thread_state_pos(id);
 
-	PRINTF("Philosopher %d [%s:%s%d] ",
+	PRINTF("thread_routine %d [%s:%s%d] ",
 	       id, prio < 0 ? "C" : "P",
 	       prio < 0 ? "" : " ",
 	       prio);
@@ -105,11 +95,6 @@ static s32_t get_random_delay(int id, int period_in_ms)
 	return ms;
 }
 
-static inline int is_last_philosopher(int id)
-{
-	return id == (NUM_PHIL - 1);
-}
-
 static void busy_wait_ms(int32_t ms){
 
 	int tempo = k_uptime_get();
@@ -123,7 +108,7 @@ static void busy_wait_ms(int32_t ms){
 
 }
 
-void philosopher(void *id, void *ct, void *periodo)
+void thread_routine(void *id, void *ct, void *periodo)
 {	
 	int my_id = (int)id;
 	int i =0;
@@ -171,33 +156,6 @@ void philosopher(void *id, void *ct, void *periodo)
 
 }
 
-static int new_prio(int phil)
-{
-#if defined(CONFIG_COOP_ENABLED) && defined(CONFIG_PREEMPT_ENABLED)
-#if SAME_PRIO
-	return 0;
-#else
-	return -(phil - (NUM_PHIL/2));
-#endif
-#else
-#if defined(CONFIG_COOP_ENABLED)
-	return -phil - 2;
-#elif defined(CONFIG_PREEMPT_ENABLED)
-	return phil;
-#else
-	#error unpossible
-#endif
-#endif
-}
-
-static void init_objects(void)
-{
-#if !STATIC_OBJS
-	for (int i = 0; i < NUM_PHIL; i++) {
-		fork_init(fork(i));
-	}
-#endif
-}
 
 static void start_threads(void)
 {
@@ -210,7 +168,7 @@ static void start_threads(void)
 	//int prio1 = new_prio(0);
 
 	k_thread_create(&threads[0], &stacks[0][0], STACK_SIZE,
-			philosopher, (void *)0, (void *)3, (void *)7, 0,
+			thread_routine, (void *)0, (void *)3, (void *)7, 0,
 			K_INHERIT_PERMS, K_FOREVER);
 
 	k_thread_start(&threads[0]);
@@ -219,7 +177,7 @@ static void start_threads(void)
 	//int prio2 = new_prio(1);
 
 	k_thread_create(&threads[1], &stacks[1][0], STACK_SIZE,
-			philosopher, (void *)1, (void *) 3, (void *)12, 1,
+			thread_routine, (void *)1, (void *) 3, (void *)12, 1,
 			K_INHERIT_PERMS, K_FOREVER);
 
 	k_thread_start(&threads[1]);
@@ -228,7 +186,7 @@ static void start_threads(void)
 	//int prio3 = new_prio(2);
 
 	k_thread_create(&threads[2], &stacks[2][0], STACK_SIZE,
-			philosopher, (void *)2, (void *) 5, (void *) 20, 2,
+			thread_routine, (void *)2, (void *) 5, (void *) 20, 2,
 			K_INHERIT_PERMS, K_FOREVER);
 
 	k_thread_start(&threads[2]);
@@ -242,7 +200,6 @@ void main(void)
 #endif
 //#define &my_mutex = 0x00414000
 
-	//init_objects();
 	k_mutex_init(&my_mutex);
 	start_threads();
 }

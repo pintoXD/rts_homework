@@ -10,14 +10,9 @@
 
 #include <misc/__assert.h>
 
-// #define SEMAPHORES 1
-#define MUTEXES 2
-// #define STACKS 3
-// #define FIFOS 4
-// #define LIFOS 5
 
-/**************************************/
-/* control the behaviour of the demo **/
+#define MUTEXES 2
+
 
 #ifndef DEBUG_PRINTF
 #define DEBUG_PRINTF 0
@@ -45,15 +40,9 @@
 #define SAME_PRIO 0
 #endif
 
-/* end - control behaviour of the demo */
-/***************************************/
-
 #define STACK_SIZE 768
 
-/*
- * There are multiple threads doing printfs and they may conflict.
- * Therefore use puts() instead of printf().
- */
+
 #if defined(CONFIG_STDOUT_CONSOLE)
 #define PRINTF(...) { char output[256]; \
 		      sprintf(output, __VA_ARGS__); puts(output); }
@@ -110,11 +99,6 @@ static s32_t get_random_delay(int id, int period_in_ms)
 	s32_t ms = (delay + 1) * period_in_ms;
 
 	return ms;
-}
-
-static inline int is_last_thread(int id)
-{
-	return id == (NUM_PHIL - 1);
 }
 
 static void busy_wait_ms(int32_t ms){
@@ -182,40 +166,8 @@ void thread_routine(void *id, void *ct, void *periodo)
 
 }
 
-static int new_prio(int phil)
-{
-#if defined(CONFIG_COOP_ENABLED) && defined(CONFIG_PREEMPT_ENABLED)
-#if SAME_PRIO
-	return 0;
-#else
-	return -(phil - (NUM_PHIL/2));
-#endif
-#else
-#if defined(CONFIG_COOP_ENABLED)
-	return -phil - 2;
-#elif defined(CONFIG_PREEMPT_ENABLED)
-	return phil;
-#else
-	#error unpossible
-#endif
-#endif
-}
-
-static void init_objects(void)
-{
-#if !STATIC_OBJS
-	for (int i = 0; i < NUM_PHIL; i++) {
-		fork_init(fork(i));
-	}
-#endif
-}
-
 static void start_threads(void)
 {
-	/*
-	 * create two coop. threads (prios -2/-1) and four preemptive threads
-	 * : (prios 0-3)
-	 */
 
 	//PRIMEIRA THREAD
 	//int prio1 = new_prio(0);
@@ -246,30 +198,11 @@ static void start_threads(void)
 	
 }
 
-#define DEMO_DESCRIPTION  \
-	"\x1b[2J\x1b[15;1H"   \
-	"FPS Description\n"  \
-	"----------------\n"  \
-	"Implementacao de um teste de escalonamento FPS\n" \
-	"Mussum Ipsum\n" \
-	"cacilds vidis\n" \
-	"litro abertis\n" \
-	"dolor %s %s and thread sleeping.\n\n", obj_init_type, fork_type_str
-
-static void display_demo_description(void)
-{
-#if !DEBUG_PRINTF
-	PRINTF(DEMO_DESCRIPTION);
-#endif
-}
-
 void main(void)
 {
-	display_demo_description();
 #if CONFIG_TIMESLICING
 	k_sched_time_slice_set(10000, 0);
 #endif
 
-	init_objects();
 	start_threads();
 }
